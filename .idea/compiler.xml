@@ -6,7 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="job4j_design" />
+        <module name="chapter_003" />
+        <module name="chapter_002" />
+        <module name="chapter_001" />
+        <module name="chapter_005" />
       </profile>
     </annotationProcessing>
   </component>
