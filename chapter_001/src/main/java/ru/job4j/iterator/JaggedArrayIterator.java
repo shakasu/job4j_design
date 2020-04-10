@@ -1,0 +1,30 @@
+package ru.job4j.iterator;
+
+import java.util.Iterator;
+
+public class JaggedArrayIterator implements Iterator<Integer> {
+    private final int[][] values;
+    private int indexOfArrays = 0;
+    private int index = 0;
+
+    public JaggedArrayIterator(int[][] values) {
+        this.values = values;
+    }
+
+    @Override
+    public boolean hasNext() {
+        boolean indexNotHasNext = values[indexOfArrays].length != index;
+        boolean indexArrayCanNotMove = values.length - 1 != indexOfArrays;
+        return  indexArrayCanNotMove || indexNotHasNext;
+    }
+
+    @Override
+    public Integer next() {
+        boolean indexHasNext = values[indexOfArrays].length > index;
+        if (!indexHasNext) {
+            index = 0;
+            indexOfArrays++;
+        }
+        return values[indexOfArrays][index++];
+    }
+}
