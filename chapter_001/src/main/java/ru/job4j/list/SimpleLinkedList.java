@@ -75,6 +75,17 @@ public class SimpleLinkedList<E> implements Iterable<E> {
         return this.size;
     }
 
+
+    /**
+     * Метод удаления первого элемент в списке.
+     */
+    public E delete() {
+        E result = first.data;
+        first = first.next;
+        size--;
+        return result;
+    }
+
     /**
      * Класс предназначен для хранения данных.
      */
