@@ -64,7 +64,12 @@ public class SimpleArray<T> implements Iterable<T>  {
             tmp = genericArray[i];
             genericArray[i] = null;
             genericArray[i - 1] = tmp;
+            cursor--;
         }
+    }
+
+    public int size() {
+        return size;
     }
 
     public T get(int index) {
