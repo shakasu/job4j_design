@@ -11,32 +11,26 @@ public class EvenIterator implements Iterator<Integer> {
         this.values = values;
     }
 
-    private int evenIndex() {
-        int result = -1;
+    @Override
+    public boolean hasNext() {
+        boolean rsl = false;
         for (int i = index; i < values.length; i++) {
             if (values[i] % 2 == 0) {
-                result = i;
+                rsl = true;
                 break;
             }
         }
-        return result;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return evenIndex() != -1;
+        return rsl;
     }
 
     @Override
     public Integer next() {
-        if (evenIndex() == -1) {
+        if (!hasNext()) {
             throw  new NoSuchElementException();
         }
-        int result = values[evenIndex()];
-        if (evenIndex() == index + 1) {
+        while (values[index] % 2 != 0) {
             index++;
         }
-        index++;
-        return result;
+        return values[index++];
     }
 }
