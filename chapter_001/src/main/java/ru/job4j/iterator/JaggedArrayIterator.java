@@ -1,6 +1,7 @@
 package ru.job4j.iterator;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class JaggedArrayIterator implements Iterator<Integer> {
     private final int[][] values;
@@ -20,6 +21,9 @@ public class JaggedArrayIterator implements Iterator<Integer> {
 
     @Override
     public Integer next() {
+        if (!hasNext()) {
+            throw  new NoSuchElementException();
+        }
         boolean indexHasNext = values[indexOfArrays].length > index;
         if (!indexHasNext) {
             index = 0;
