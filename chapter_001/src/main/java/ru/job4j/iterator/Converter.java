@@ -12,18 +12,10 @@ public class Converter {
 
             @Override
             public boolean hasNext() {
-                boolean result = false;
-                if (actual.hasNext()) {
-                    result = true;
-                } else {
-                    if (it.hasNext()) {
-                        actual = it.next();
-                        if (actual.hasNext()) {
-                            result = true;
-                        }
-                    }
+                while (it.hasNext() && !actual.hasNext()) {
+                    actual = it.next();
                 }
-                return result;
+                return actual.hasNext();
             }
 
             @Override
