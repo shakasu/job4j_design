@@ -8,7 +8,7 @@ public class Converter {
 
     public Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
         return new Iterator<>() {
-            public Iterator<Integer> actual = it.next();
+            public Iterator<Integer> actual = (it.hasNext()) ? it.next() : null;
 
             @Override
             public boolean hasNext() {
