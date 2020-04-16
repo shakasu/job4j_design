@@ -5,13 +5,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class DynamicSimpleArray<E> implements Iterable<E> {
-
     private Object[] container;
-
     private int size;
-
     private int modCount = 0;
-
     private int cursor = 0;
 
     public DynamicSimpleArray(int size) {
@@ -22,10 +18,9 @@ public class DynamicSimpleArray<E> implements Iterable<E> {
     @Override
     public Iterator<E> iterator() {
         return new Iterator<>() {
-
             private final int expectedModCount = modCount;
-
             private int index = 0;
+
 
             private void checkCME() {
                 if (expectedModCount != modCount) {
@@ -36,7 +31,7 @@ public class DynamicSimpleArray<E> implements Iterable<E> {
             @Override
             public boolean hasNext() {
                 checkCME();
-                return container.length > index;
+                return cursor > index;
             }
 
             @Override
@@ -53,6 +48,7 @@ public class DynamicSimpleArray<E> implements Iterable<E> {
     public void add(E value) {
         if (cursor == size) {
             grow();
+            modCount++;
         }
         container[cursor++] = value;
     }
@@ -62,7 +58,6 @@ public class DynamicSimpleArray<E> implements Iterable<E> {
     }
 
     private void grow() {
-        modCount++;
         Object[] objects = new Object[2 * size];
         if (size >= 0) {
             System.arraycopy(container, 0, objects, 0, size);
