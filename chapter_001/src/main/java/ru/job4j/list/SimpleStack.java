@@ -4,9 +4,7 @@ public class SimpleStack<T> {
     private SimpleLinkedList<T> linked = new SimpleLinkedList<>();
 
     public T poll() {
-        T result = linked.iterator().next();
-        linked.delete();
-        return result;
+        return linked.delete();
     }
 
     public void push(T value) {
