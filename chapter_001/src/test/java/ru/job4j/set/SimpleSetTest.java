@@ -22,8 +22,8 @@ public class SimpleSetTest {
         intArr.add(3);
     }
 
-    @Test
-    public void whenAddDublicate() {
+    @Test(expected = NoSuchElementException.class)
+    public void whenAddDuplicate() {
         SimpleSet<Integer> intArr1 = new SimpleSet<>(5);
         intArr1.add(1);
         intArr1.add(2);

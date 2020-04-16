@@ -16,7 +16,7 @@ public class SimpleArrayStringTest {
 
     @Before
     public void setUp() {
-        strArr = new SimpleArray<>(3);
+        strArr = new SimpleArray<>(10);
         iter = strArr.iterator();
         strArr.add("one");
         strArr.add("two");

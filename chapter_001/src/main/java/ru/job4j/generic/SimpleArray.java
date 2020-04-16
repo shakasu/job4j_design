@@ -23,7 +23,7 @@ public class SimpleArray<T> implements Iterable<T>  {
 
             @Override
             public boolean hasNext() {
-                return genericArray.length > index;
+                return cursor > index;
             }
 
             @Override
