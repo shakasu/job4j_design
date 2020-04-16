@@ -38,7 +38,6 @@ public class SimpleArrayList<E> {
      * Метод получения элемента по индексу.
      */
     public E get(int index) {
-        checkNSEE();
         Node<E> result = this.first;
         for (int i = 0; i < index; i++) {
             result = result.next;
