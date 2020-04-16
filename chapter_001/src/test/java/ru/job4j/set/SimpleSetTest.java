@@ -80,24 +80,13 @@ public class SimpleSetTest {
     }
 
     @Test
-    public void addAndGet() {
-        assertThat(intArr.get(0), is(1));
-        assertThat(intArr.get(1), is(2));
-        assertThat(intArr.get(2), is(3));
-    }
-
-    @Test
-    public void set() {
-        intArr.set(0, 666);
-        assertThat(intArr.get(0), is(666));
-    }
-
-    @Test
-    public void remove() {
-        intArr.remove(1);
-        assertThat(intArr.get(0), is(1));
-        assertThat(intArr.get(1), is(3));
-        assertNull(intArr.get(2));
+    public void contains() {
+        assertThat(intArr.contains(1), is(true));
+        assertThat(intArr.contains(2), is(true));
+        assertThat(intArr.contains(3), is(true));
+        assertThat(intArr.contains(4), is(false));
+        assertThat(intArr.contains(5), is(false));
+        assertThat(intArr.contains(6), is(false));
     }
 }
 
