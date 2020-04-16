@@ -1,8 +1,6 @@
 package ru.job4j.generic;
 
-import java.util.Random;
-
-public class AbstractStore implements Store<Base> {
+public class AbstractStore<E extends Base> implements Store<E> {
     private SimpleArray<Base> bases;
 
     public AbstractStore(int size) {
@@ -39,7 +37,7 @@ public class AbstractStore implements Store<Base> {
         return result;    }
 
     @Override
-    public Base findById(String id) {
+    public E findById(String id) {
         Base result = null;
         for (int i = 0; i < bases.size(); i++) {
             if (bases.get(i).getId().equals(id)) {
@@ -47,7 +45,7 @@ public class AbstractStore implements Store<Base> {
                 break;
             }
         }
-        return result;
+        return (E) result;
     }
 }
 
