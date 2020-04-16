@@ -3,6 +3,7 @@ package ru.job4j.list;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.NoSuchElementException;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -16,6 +17,12 @@ public class SimpleArrayListTest {
         list.add(1);
         list.add(2);
         list.add(3);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void ifEmptyContainer() {
+        list = new SimpleArrayList<>();
+        list.delete();
     }
 
     @Test

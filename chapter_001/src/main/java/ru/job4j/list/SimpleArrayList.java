@@ -1,5 +1,7 @@
 package ru.job4j.list;
 
+import java.util.NoSuchElementException;
+
 public class SimpleArrayList<E> {
 
     private int size;
@@ -15,10 +17,17 @@ public class SimpleArrayList<E> {
         this.size++;
     }
 
+    private void checkNSEE() {
+        if (first == null) {
+            throw new NoSuchElementException();
+        }
+    }
+
     /**
      * Реализовать метод удаления первого элемент в списке.
      */
     public E delete() {
+        checkNSEE();
         E result = first.data;
         first = first.next;
         size--;
@@ -29,6 +38,7 @@ public class SimpleArrayList<E> {
      * Метод получения элемента по индексу.
      */
     public E get(int index) {
+        checkNSEE();
         Node<E> result = this.first;
         for (int i = 0; i < index; i++) {
             result = result.next;
