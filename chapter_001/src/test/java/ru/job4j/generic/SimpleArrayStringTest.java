@@ -77,7 +77,7 @@ public class SimpleArrayStringTest {
         assertThat(strArr.get(0), is("666"));
     }
 
-    @Test
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void remove() {
         strArr.remove(1);
         assertThat(strArr.get(0), is("one"));

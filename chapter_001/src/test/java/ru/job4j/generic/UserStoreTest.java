@@ -28,7 +28,7 @@ public class UserStoreTest {
         assertThat(userStore.findById("3"), is(user3));
     }
 
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void replace() {
         userStore.replace("1", user4);
         assertThat(userStore.findById("4"), is(user4));
@@ -36,17 +36,12 @@ public class UserStoreTest {
 
     }
 
-    @Test
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void delete() {
         userStore.delete("1");
         assertThat(userStore.findById("2"), is(user2));
         assertThat(userStore.findById("3"), is(user3));
         userStore.add(user4);
         assertThat(userStore.findById("4"), is(user4));
-    }
-
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
-    public void storageIsFull() {
-        userStore.add(user4);
     }
 }
