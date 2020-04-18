@@ -2,6 +2,7 @@ package ru.job4j.generic;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SimpleArray<T> implements Iterable<T>  {
     private Object[] genericArray;
@@ -36,44 +37,27 @@ public class SimpleArray<T> implements Iterable<T>  {
         };
     }
 
-    private void callArrayIndexOutOfBoundsException(int index) {
-        if (index > size) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
-    }
-
     public void add(T model) {
-        callArrayIndexOutOfBoundsException(cursor);
-        if (model != null) {
-            this.genericArray[cursor++] = model;
-        }
+        Objects.checkIndex(cursor, size);
+        this.genericArray[cursor++] = model;
     }
 
     public void set(int index, T model) {
-        callArrayIndexOutOfBoundsException(index);
-        if (model != null) {
-            this.genericArray[index] = model;
-        }
+        Objects.checkIndex(index, size);
+        this.genericArray[index] = model;
     }
 
     public void remove(int index) {
-        callArrayIndexOutOfBoundsException(index);
-        Object tmp;
-        genericArray[index] = null;
-        for (int i = index + 1; i < size; i++) {
-            tmp = genericArray[i];
-            genericArray[i] = null;
-            genericArray[i - 1] = tmp;
-            cursor--;
-        }
+        Objects.checkIndex(index, size);
+        System.arraycopy(genericArray, index, genericArray, index - 1, genericArray.length - index + 1);
     }
 
     public int size() {
-        return size;
+        return cursor;
     }
 
     public T get(int index) {
-        callArrayIndexOutOfBoundsException(index);
+        Objects.checkIndex(index, size);
         return (T) this.genericArray[index];
     }
 }

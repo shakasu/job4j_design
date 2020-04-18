@@ -23,6 +23,11 @@ public class SimpleArrayIntegerTest {
     }
 
     @Test
+    public void sizeTest() {
+        assertThat(intArr.size(), is(3));
+    }
+
+    @Test
     public void iterator1() {
         assertThat(iter.hasNext(), is(true));
         assertThat(iter.hasNext(), is(true));
@@ -63,25 +68,28 @@ public class SimpleArrayIntegerTest {
         iter.next();
     }
 
-    @Test
+    @Test(expected = IndexOutOfBoundsException.class)
     public void addAndGet() {
         assertThat(intArr.get(0), is(1));
         assertThat(intArr.get(1), is(2));
         assertThat(intArr.get(2), is(3));
+        intArr.get(45);
     }
 
-    @Test
+    @Test(expected = IndexOutOfBoundsException.class)
     public void set() {
         intArr.set(0, 666);
         assertThat(intArr.get(0), is(666));
+        intArr.set(555, 0);
     }
 
-    @Test
+    @Test(expected = IndexOutOfBoundsException.class)
     public void remove() {
         intArr.remove(1);
         assertThat(intArr.get(0), is(1));
         assertThat(intArr.get(1), is(3));
         assertNull(intArr.get(2));
+        intArr.remove(10);
     }
 }
 
