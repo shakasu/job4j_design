@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 public class UserStoreTest {
@@ -29,19 +28,17 @@ public class UserStoreTest {
         assertThat(userStore.findById("3"), is(user3));
     }
 
-    @Test
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void replace() {
         userStore.replace("1", user4);
-        assertNull(userStore.findById("1"));
         assertThat(userStore.findById("4"), is(user4));
+        userStore.findById("1");
+
     }
 
     @Test
     public void delete() {
         userStore.delete("1");
-/*
-        assertNull(userStore.findById("1")); // npe
-*/
         assertThat(userStore.findById("2"), is(user2));
         assertThat(userStore.findById("3"), is(user3));
         userStore.add(user4);
