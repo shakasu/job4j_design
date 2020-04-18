@@ -44,4 +44,13 @@ public class SimpleArrayListTest {
         assertThat(list.get(0), is(1));
 
     }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void whenGetInvalidIndex() {
+        assertThat(list.get(0), is(3));
+        assertThat(list.get(1), is(2));
+        assertThat(list.get(2), is(1));
+        list.get(123);
+    }
+
 }
