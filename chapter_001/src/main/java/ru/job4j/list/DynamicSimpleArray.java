@@ -3,14 +3,16 @@ package ru.job4j.list;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class DynamicSimpleArray<E> implements Iterable<E> {
     private Object[] container;
     private int size;
-    private int modCount = 0;
+    private int modCount;
     private int cursor = 0;
 
     public DynamicSimpleArray(int size) {
+        modCount = 0;
         this.size = size;
         this.container = new Object[size];
     }
@@ -21,22 +23,16 @@ public class DynamicSimpleArray<E> implements Iterable<E> {
             private final int expectedModCount = modCount;
             private int index = 0;
 
-
-            private void checkCME() {
+            @Override
+            public boolean hasNext() {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-            }
-
-            @Override
-            public boolean hasNext() {
-                checkCME();
                 return cursor > index;
             }
 
             @Override
             public E next() {
-                checkCME();
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
@@ -48,12 +44,13 @@ public class DynamicSimpleArray<E> implements Iterable<E> {
     public void add(E value) {
         if (cursor == size) {
             grow();
-            modCount++;
         }
+        modCount++;
         container[cursor++] = value;
     }
 
     public E get(int index) {
+        Objects.checkIndex(index, cursor);
         return (E) container[index];
     }
 
@@ -67,6 +64,6 @@ public class DynamicSimpleArray<E> implements Iterable<E> {
     }
 
     public int size() {
-        return size;
+        return cursor;
     }
 }

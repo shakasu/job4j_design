@@ -19,10 +19,10 @@ public class DynamicSimpleArrayTest {
     @Before
     public void setUp() {
         dynArr = new DynamicSimpleArray<>(3);
-        iter = dynArr.iterator();
         dynArr.add("one");
         dynArr.add("two");
         dynArr.add("three");
+        iter = dynArr.iterator();
     }
 
     @Test
@@ -83,6 +83,8 @@ public class DynamicSimpleArrayTest {
     public void grow() {
         assertThat(dynArr.size(), is(3));
         dynArr.add("four");
+        dynArr.add("five");
+        dynArr.add("six");
         assertThat(dynArr.size(), is(6));
     }
 }
