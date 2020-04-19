@@ -4,18 +4,16 @@ public class SimpleQueue<T> {
     private SimpleStack<T> input = new SimpleStack<>();
     private SimpleStack<T> output = new SimpleStack<>();
 
-    public T poll() {
-         return output.poll();
+    public  void push(T value) {
+        input.push(value);
     }
 
-    public void push(T value) {
-        int outsize = output.size();
-        for (int i = 0; i < outsize; i++) {
-            input.push(output.poll());
+    public T poll() {
+        if (input.size() != 0) {
+            while (input.size() > 0) {
+                output.push(input.poll());
+            }
         }
-        output.push(value);
-        for (int i = 0; i < outsize; i++) {
-            output.push(input.poll());
-        }
+        return output.poll();
     }
 }
