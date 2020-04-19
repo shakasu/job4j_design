@@ -5,11 +5,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class SimpleLinkedList<E> implements Iterable<E> {
-
     private int size;
-
-    private Node<E> first;
-
+    private Node<E> head;
     private int modCount = 0;
 
     /**
@@ -18,30 +15,27 @@ public class SimpleLinkedList<E> implements Iterable<E> {
     @Override
     public Iterator<E> iterator() {
         return new Iterator<>() {
-
+            Node<E> node = head;
             private int index = 0;
-
             private final int expectedModCount = modCount;
-
-            private void checkCME() {
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
-            }
 
             @Override
             public boolean hasNext() {
-                checkCME();
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 return index != size;
             }
 
             @Override
             public E next() {
-                checkCME();
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return get(index++);
+                E value = node.value;
+                node = node.next;
+                index++;
+                return value;
             }
         };
     }
@@ -51,8 +45,8 @@ public class SimpleLinkedList<E> implements Iterable<E> {
      */
     public void add(E date) {
         Node<E> newLink = new Node<>(date);
-        newLink.next = this.first;
-        this.first = newLink;
+        newLink.next = this.head;
+        this.head = newLink;
         this.size++;
         this.modCount++;
     }
@@ -61,11 +55,11 @@ public class SimpleLinkedList<E> implements Iterable<E> {
      * Метод получения элемента по индексу.
      */
     public E get(int index) {
-        Node<E> result = this.first;
+        Node<E> result = this.head;
         for (int i = 0; i < index; i++) {
             result = result.next;
         }
-        return result.data;
+        return result.value;
     }
 
     /**
@@ -75,14 +69,14 @@ public class SimpleLinkedList<E> implements Iterable<E> {
         return this.size;
     }
 
-
     /**
      * Метод удаления первого элемент в списке.
      */
     public E delete() {
-        E result = first.data;
-        first = first.next;
+        E result = head.value;
+        head = head.next;
         size--;
+        this.modCount++;
         return result;
     }
 
@@ -90,12 +84,11 @@ public class SimpleLinkedList<E> implements Iterable<E> {
      * Класс предназначен для хранения данных.
      */
     private static class Node<E> {
-
-        E data;
+        E value;
         Node<E> next;
 
-        Node(E data) {
-            this.data = data;
+        Node(E value) {
+            this.value = value;
         }
     }
 }
