@@ -22,4 +22,15 @@ public class UserTest {
         System.out.println(map);
         assertThat(map.size(), is(2));
     }
+
+    @Test
+    public void whenEqualsAreNotRedefined() {
+        UserHashCode firstKey = new UserHashCode("qwe", 12, new GregorianCalendar(2020, Calendar.MARCH, 20));
+        UserHashCode secondKey = new UserHashCode("qwe", 12, new GregorianCalendar(2020, Calendar.MARCH, 20));
+        Map<UserHashCode, Object> map = new HashMap<>();
+        map.put(firstKey, "first value");
+        map.put(secondKey, "second value");
+        System.out.println(map);
+        assertThat(map.size(), is(2));
+    }
 }
