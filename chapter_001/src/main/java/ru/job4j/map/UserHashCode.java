@@ -13,18 +13,6 @@ public class UserHashCode {
         this.birthday = birthday;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getChildren() {
-        return children;
-    }
-
-    public Calendar getBirthday() {
-        return birthday;
-    }
-
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);

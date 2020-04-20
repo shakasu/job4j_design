@@ -12,16 +12,4 @@ public class User {
         this.children = children;
         this.birthday = birthday;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getChildren() {
-        return children;
-    }
-
-    public Calendar getBirthday() {
-        return birthday;
-    }
 }
