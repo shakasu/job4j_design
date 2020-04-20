@@ -2,9 +2,6 @@ package ru.job4j.map;
 
 import java.util.Calendar;
 
-/**
- *
- */
 public class User {
     private final String name;
     private final int children;
