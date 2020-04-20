@@ -48,4 +48,19 @@ public class UserTest {
         assertThat(map.get(firstKey), is("first value"));
         assertThat(map.get(secondKey), is("second value"));
     }
+
+    @Test
+    public void whenEqualsAndHashCodeAreRedefined() {
+        UserBothMethods firstKey = new UserBothMethods("qwe", 12, new GregorianCalendar(2020, Calendar.MARCH, 20));
+        UserBothMethods secondKey = new UserBothMethods("qwe", 12, new GregorianCalendar(2020, Calendar.MARCH, 20));
+        Map<UserBothMethods, Object> map = new HashMap<>();
+        map.put(firstKey, "first value");
+        map.put(secondKey, "second value");
+        System.out.println(map);
+        System.out.println(firstKey.equals(secondKey));
+        System.out.println(firstKey.hashCode() == secondKey.hashCode());
+        assertThat(map.size(), is(1));
+        assertThat(map.get(firstKey), is("second value"));
+        assertThat(map.get(secondKey), is("second value"));
+    }
 }
