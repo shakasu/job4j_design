@@ -28,9 +28,24 @@ public class UserTest {
         UserHashCode firstKey = new UserHashCode("qwe", 12, new GregorianCalendar(2020, Calendar.MARCH, 20));
         UserHashCode secondKey = new UserHashCode("qwe", 12, new GregorianCalendar(2020, Calendar.MARCH, 20));
         Map<UserHashCode, Object> map = new HashMap<>();
+        System.out.println(firstKey.hashCode() == secondKey.hashCode());
         map.put(firstKey, "first value");
         map.put(secondKey, "second value");
         System.out.println(map);
         assertThat(map.size(), is(2));
+    }
+
+    @Test
+    public void whenHashCodeAreNotRedefined() {
+        UserEquals firstKey = new UserEquals("qwe", 12, new GregorianCalendar(2020, Calendar.MARCH, 20));
+        UserEquals secondKey = new UserEquals("qwe", 12, new GregorianCalendar(2020, Calendar.MARCH, 20));
+        Map<UserEquals, Object> map = new HashMap<>();
+        map.put(firstKey, "first value");
+        map.put(secondKey, "second value");
+        System.out.println(map);
+        System.out.println(firstKey.equals(secondKey));
+        assertThat(map.size(), is(2));
+        assertThat(map.get(firstKey), is("first value"));
+        assertThat(map.get(secondKey), is("second value"));
     }
 }
