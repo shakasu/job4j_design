@@ -32,7 +32,6 @@ logs/*
 
 # sbt specific
 target/
-!target/site/jacoco/index.html
 project/boot
 lib_managed/*
 project/build/target
