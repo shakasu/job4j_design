@@ -9,7 +9,7 @@ public class SimpleQueue<T> {
     }
 
     public T poll() {
-        if (input.size() != 0) {
+        if (output.size() == 0) {
             while (input.size() > 0) {
                 output.push(input.poll());
             }
