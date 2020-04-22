@@ -64,17 +64,4 @@ public class ForwardLinked<T> implements Iterable<T> {
             this.next = next;
         }
     }
-
-    public static void main(String[] args) {
-        ForwardLinked<Integer> linked = new ForwardLinked<>();
-        linked.add(1);
-        linked.add(2);
-        linked.add(3);
-        linked.add(4);
-        linked.add(5);
-        linked.revert();
-        for (Integer integer : linked) {
-            System.out.println(integer);
-        }
-    }
 }

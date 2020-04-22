@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 /**
  * Коллекция SimpleHashMap реализуется на массиве пар ключ-значение,
  * между парами существует связь по очереди добавления,
- * реализовалая в классе Node.
+ * реализованная в классе Node.
  * @param <K> - ключ.
  * @param <V> - значение.
  */
@@ -19,7 +19,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     private Node<K, V> head;
 
     /**
-     * cursor считает сколько элементов добавлено в множество.
+     * cursor считает, сколько элементов добавлено в множество.
      * modCount фиксирует колличество изменений в структуре.
      */
     private static int cursor;
@@ -49,7 +49,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      * @return - истинность добавления нового элемента в множество.
      */
     public boolean insert(K key, V value) {
-        boolean result = !isThisKeyExist(key);
+        boolean result = !doesThisKeyExist(key);
         if (result) {
             Node<K, V> newNode = new Node<>(key, value, null);
             putInLinkedList(newNode);
@@ -66,16 +66,16 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      * @return - значение соответсвующее данному ключу.
      */
     public V get(K key) {
-        return (isThisKeyExist(key) && this.values[hash(key)] != null) ? this.values[hash(key)].value : null;
+        return (doesThisKeyExist(key) && this.values[hash(key)] != null) ? this.values[hash(key)].value : null;
     }
 
     /**
-     * Если данный ключ существует, то метож его удалит нативным методом копирования со сдвигом и сдвинет счетчики.
+     * Если данный ключ существует, то метод его удалит нативным методом копирования со сдвигом и сдвинет счетчики.
      * @param key - ключ.
      * @return - истинность удаления элемента.
      */
     public boolean delete(K key) {
-        boolean result = isThisKeyExist(key);
+        boolean result = doesThisKeyExist(key);
         if (result) {
             modCount++;
             cursor--;
@@ -144,7 +144,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     }
 
     /**
-     * Метод связывает элемент в связанный список,
+     * Метод добаляет элемент в связанный список,
      * теперь у каждого элемента будет ссылка на следующий.
      * @param newNode - новый элемент в связанном списке.
      */
@@ -179,7 +179,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      * При увелицении размера, ранее добавленные элементы будут потеряны, так как, метод get() завязан на
      * hash(), а индекс ранее добавленных элементов высчитывался при прошлой длине массива.
      * Вторая версия данного метода:
-     * Создать счетчик увеличений массива, фиксировать текущее кол-во элементов в конструкторе Noda<>.
+     * Создать счетчик увеличений массива, фиксировать текущее кол-во элементов в конструкторе Node<>.
      * А формулу хеша вместо size() -> (startCapacity * growCounter).
      * В таком случае будет ошибка переполнения стека, тк два метода обращаются друг другу
      * в рекурсивной форме.
@@ -210,7 +210,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      * @param key - ключ.
      * @return возвращает истиность наличия данного ключа в множестве.
      */
-    private boolean isThisKeyExist(K key) {
+    private boolean doesThisKeyExist(K key) {
         boolean result = false;
         for (Node<K, V> node : this.values) {
             if (node != null && node.key.equals(key)) {
