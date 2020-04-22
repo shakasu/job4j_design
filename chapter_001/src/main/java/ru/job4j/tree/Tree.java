@@ -2,7 +2,7 @@ package ru.job4j.tree;
 
 import java.util.*;
 
-class Tree<E> implements SimpleTree<E> {
+class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     private final Node<E> root;
 
     Tree(final E root) {
@@ -34,5 +34,20 @@ class Tree<E> implements SimpleTree<E> {
             data.addAll(el.children);
         }
         return rsl;
+    }
+
+    public boolean isBinary() {
+        boolean result = true;
+        Queue<Node<E>> data = new LinkedList<>();
+        data.offer(this.root);
+        while (!data.isEmpty()) {
+            Node<E> el = data.poll();
+            if (el.children.size() > 2) {
+                result = false;
+                break;
+            }
+            data.addAll(el.children);
+        }
+        return result;
     }
 }
