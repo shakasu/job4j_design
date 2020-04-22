@@ -1,5 +1,7 @@
 package ru.job4j.generic;
 
+import java.util.NoSuchElementException;
+
 public class AbstractStore<E extends Base> implements Store<E> {
     private SimpleArray<Base> bases;
 
@@ -14,24 +16,24 @@ public class AbstractStore<E extends Base> implements Store<E> {
 
     @Override
     public boolean replace(String id, Base model) {
-        int index = indexOf(id);
+        int index = validIndexOf(id);
         bases.set(index, model);
         return index != -1;
     }
 
     @Override
     public boolean delete(String id) {
-        int index = indexOf(id);
+        int index = validIndexOf(id);
         bases.remove(index);
         return index != -1;
     }
 
     @Override
     public E findById(String id) {
-        return (E) bases.get(indexOf(id));
+        return (E) bases.get(validIndexOf(id));
     }
 
-    private int indexOf(String id) {
+    private int validIndexOf(String id) {
         int result = -1;
         for (int i = 0; i < bases.cursor(); i++) {
             if (bases.get(i).getId().equals(id)) {
@@ -39,7 +41,11 @@ public class AbstractStore<E extends Base> implements Store<E> {
                 break;
             }
         }
-        return result;
+        if (result != -1) {
+            return result;
+        } else {
+            throw new ArrayIndexOutOfBoundsException();
+        }
     }
 }
 

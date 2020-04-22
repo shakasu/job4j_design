@@ -21,6 +21,11 @@ public class UserStoreTest {
         userStore.add(user3);
     }
 
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void exceptionTest() {
+        userStore.findById("asd");
+    }
+
     @Test
     public void add() {
         assertThat(userStore.findById("1"), is(user1));
