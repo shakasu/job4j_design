@@ -34,6 +34,6 @@ public class SimpleSet<T> implements Iterable<T> {
     }
 
     public int size() {
-        return values.size();
+        return values.cursor();
     }
 }

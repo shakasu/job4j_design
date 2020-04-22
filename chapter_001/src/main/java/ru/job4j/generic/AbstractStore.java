@@ -33,7 +33,7 @@ public class AbstractStore<E extends Base> implements Store<E> {
 
     private int indexOf(String id) {
         int result = -1;
-        for (int i = 0; i < bases.size(); i++) {
+        for (int i = 0; i < bases.cursor(); i++) {
             if (bases.get(i).getId().equals(id)) {
                 result = i;
                 break;

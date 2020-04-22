@@ -19,7 +19,6 @@ public class SimpleArray<T> implements Iterable<T>  {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
-
             private int index = 0;
 
             @Override
@@ -50,9 +49,10 @@ public class SimpleArray<T> implements Iterable<T>  {
     public void remove(int index) {
         Objects.checkIndex(index, size);
         System.arraycopy(genericArray, index, genericArray, index - 1, genericArray.length - index + 1);
+        cursor--;
     }
 
-    public int size() {
+    public int cursor() {
         return cursor;
     }
 

@@ -24,7 +24,7 @@ public class SimpleArrayIntegerTest {
 
     @Test
     public void sizeTest() {
-        assertThat(intArr.size(), is(3));
+        assertThat(intArr.cursor(), is(3));
     }
 
     @Test
