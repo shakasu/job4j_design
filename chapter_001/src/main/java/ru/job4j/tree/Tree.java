@@ -17,7 +17,7 @@ class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             findBy(parent).ifPresent(eNode -> eNode.children.add(node));
             result = true;
         }
-        return result;
+        return (result && findBy(child).isPresent());
     }
 
     @Override
