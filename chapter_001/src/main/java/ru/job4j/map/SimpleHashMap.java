@@ -22,8 +22,8 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      * cursor считает, сколько элементов добавлено в множество.
      * modCount фиксирует колличество изменений в структуре.
      */
-    private static int cursor;
-    private static int modCount;
+    private int cursor;
+    private int modCount;
 
     /**
      * Константы: начальная емкость и коэффициент загрузки.
