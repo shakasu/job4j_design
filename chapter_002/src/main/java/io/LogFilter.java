@@ -21,7 +21,11 @@ public class LogFilter {
                         new FileOutputStream(file)
                 )
         )) {
-            out.write(log.toString());
+            String logStr = "";
+            for (String line : log) {
+                logStr = String.format("%s%n%s", logStr, line);
+            }
+            out.write(logStr);
         } catch (IOException e) {
             e.printStackTrace();
         }
