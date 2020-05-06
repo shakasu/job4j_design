@@ -5,7 +5,8 @@
 *.swp
 *.out
 *.log
-
+!server.log
+!target.log
 # rails specific
 *.sqlite3
 config/database.yml
