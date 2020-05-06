@@ -13,14 +13,14 @@ import java.util.NoSuchElementException;
  */
 public class SimpleHashMap<K, V> implements Iterable<V> {
     /**
-     * Массив пар и голова односвязаного списка.
+     * Массив пар и голова односвязного списка для текущего и нового массива.
      */
     private Node<K, V>[] values;
     private Node<K, V> head;
 
     /**
      * cursor считает, сколько элементов добавлено в множество.
-     * modCount фиксирует колличество изменений в структуре.
+     * modCount фиксирует количество изменений в структуре.
      */
     private int cursor;
     private int modCount;
@@ -41,52 +41,110 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     }
 
     /**
-     * В данном методе 4 вспомогательных, они специально вынесены для повышения читаемости.
-     * putInLinkedList() - необходим исключительно для реализации итератора, иначе между элементами
-     * нет никакой связи.
+     * Метод добавляет пару в структуру и возвращает истинность операции.
      * @param key - ключ.
      * @param value - значение.
      * @return - истинность добавления нового элемента в множество.
      */
     public boolean insert(K key, V value) {
-        boolean result = !doesThisKeyExist(key);
+        boolean result = putVal(key, value, this.values);
+        growCheck();
         if (result) {
-            Node<K, V> newNode = new Node<>(key, value, null);
-            putInLinkedList(newNode);
-            putInGlobalArray(newNode, key);
-            growCheck();
+            this.cursor++;
+            this.modCount++;
         }
         return result;
     }
 
     /**
-     * Проверка на ненулевое возвращаемое значение и на наличие данного ключа в множестве.
-     * Возможен null, если такого ключа в множетве нет, или вызываемый элемент - null.
+     * Метод добавляет пару в массив, связывая ячейки в порядке добавления.
      * @param key - ключ.
-     * @return - значение соответсвующее данному ключу.
+     * @param value - значение.
+     * @param values - массив, в который добавится пара.
+     * @return - истинность добавления нового элемента в массив.
      */
-    public V get(K key) {
-        return (doesThisKeyExist(key) && this.values[hash(key)] != null) ? this.values[hash(key)].value : null;
+    private boolean putVal(K key, V value, Node<K, V>[] values) {
+        boolean result = !doesThisKeyExist(key, values);
+        if (result && key != null && value != null) {
+            Node<K, V> newNode = new Node<>(key, value, null);
+            if (head == null) {
+                head = newNode;
+            } else {
+                Node<K, V> tail = head;
+                while (tail.next != null) {
+                    tail = tail.next;
+                }
+                tail.next = newNode;
+            }
+            values[hash(key)] = newNode;
+        }
+        return  result;
     }
 
     /**
-     * Если данный ключ существует, то метод его удалит нативным методом копирования со сдвигом и сдвинет счетчики.
+     * Метод проверяет на ненулевое возвращаемое значение и на наличие данного ключа в множестве.
+     * Возможен null, если такого ключа в множестве нет, или вызываемый элемент - null.
+     * @param key - ключ.
+     * @return - значение соответствующее данному ключу.
+     */
+    public V get(K key) {
+        return (doesThisKeyExist(key, this.values) && this.values[hash(key)] != null) ? this.values[hash(key)].value : null;
+    }
+
+    /**
+     * Если данный ключ существует, то метод его удалит его из массива, пересчитает размер массива и сдвинет счетчики.
      * @param key - ключ.
      * @return - истинность удаления элемента.
      */
     public boolean delete(K key) {
-        boolean result = doesThisKeyExist(key);
+        boolean result = doesThisKeyExist(key, this.values);
         if (result) {
             modCount++;
             cursor--;
-            int index = hash(key);
-            System.arraycopy(this.values, index, this.values, index - 1, this.values.length - index);
+            this.values[hash(key)] = null;
+            resize(size() - 1);
         }
         return result;
     }
 
     /**
-     * @return возвращает специальный итератор, реализованный связаным списком.
+     * key.hashCode() является 10-значным число, что больше, чем длина массива,
+     * поэтому его надо привести так, чтобы он остался уникальным для актуального размера массива пар.
+     * @param key ключ элемента.
+     * @return - индекс в который будет помещен элемент в глобальном массиве.
+     */
+    private int hash(K key) {
+        return key.hashCode() % size();
+    }
+
+    /**
+     * Проверка необходимости увеличить длину массива, если количество элементов станет
+     * равным (длина массива) * (коэффициент загрузки),
+     * то создается в два раза более длинный массив и в него перемещаются элементы.
+     */
+    private void growCheck() {
+        if (cursor + 1 == this.loadFactor * size()) {
+            resize(2 * size());
+        }
+    }
+
+    /**
+     * Метод перемещает элементы из старого массива,
+     * новый с новым размером, с пересчетом hash().
+     * @param newSize - новый размер массива.
+     */
+    private void resize(int newSize) {
+        Node<K, V>[] intermediateValues = new Node[newSize];
+        for (Node<K, V> node : this.values) {
+            if (node != null) {
+                putVal(node.key, node.value, intermediateValues);
+            }
+        }
+        this.values = intermediateValues;
+    }
+
+    /**
+     * @return возвращает специальный итератор, реализованный связным списком.
      */
     @Override
     public Iterator<V> iterator() {
@@ -128,91 +186,27 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     }
 
     /**
-     *
-     * @return - колличество элементов в множестве.
+     * @return - количество элементов в множестве.
      */
-    public int elements() {
+    public int elementCount() {
         return cursor;
     }
 
     /**
-     *
-     * @return - колличество ячеек в множестве.
+     * @return - количество ячеек в множестве.
      */
     public int size() {
         return this.values.length;
     }
 
     /**
-     * Метод добаляет элемент в связанный список,
-     * теперь у каждого элемента будет ссылка на следующий.
-     * @param newNode - новый элемент в связанном списке.
-     */
-    private void putInLinkedList(Node<K, V> newNode) {
-        if (this.head == null) {
-            this.head = newNode;
-        } else {
-            Node<K, V> tail = this.head;
-            while (tail.next != null) {
-                tail = tail.next;
-            }
-            tail.next = newNode;
-        }
-    }
-
-    /**
-     * Помещает элемент в массив на специальный индекс, высчитывающийся из хеш-кода ключа,
-     * обеспечивается фиксированное время вставки и получения.
-     * @param newNode - новый элемент в глобальном массиве.
-     * @param key - ключ элемента.
-     */
-    private void putInGlobalArray(Node<K, V> newNode, K key) {
-        this.values[hash(key)] = newNode;
-        modCount++;
-        cursor++;
-    }
-
-    /**
-     * key.hashCode() является 10-значным число, что больше, чем длина глобального массива,
-     * поэтому его надо обрубить так, чтобы он остался уникальным для актуального размера глобального массива.
-     * Этот метод имеет существенной недостаток, который не дает полноценно работать с коллекцией.
-     * При увелицении размера, ранее добавленные элементы будут потеряны, так как, метод get() завязан на
-     * hash(), а индекс ранее добавленных элементов высчитывался при прошлой длине массива.
-     * Вторая версия данного метода:
-     * Создать счетчик увеличений массива, фиксировать текущее кол-во элементов в конструкторе Node<>.
-     * А формулу хеша вместо size() -> (startCapacity * growCounter).
-     * В таком случае будет ошибка переполнения стека, тк два метода обращаются друг другу
-     * в рекурсивной форме.
-     * Третий вариант решения этой проблемы - реализовать защиту от коллизий, создав односвязный список,
-     * в каждом элементе массива, однако это противоречит поставленой задаче.
-     * @param key ключ элемента.
-     * @return - индекс в который будет помещен элемент в глобальном массиве.
-     */
-    private int hash(K key) {
-        return key.hashCode() % size();
-    }
-
-    /**
-     * Проверка необходимости увеличить длину массива, если количество элементов станет равным (длина массива) * (коэффициент загрузки),
-     * то создается в два раза более длинный массив и в него комируются элементы.
-     * После новый массив становится глобальным.
-     */
-    private void growCheck() {
-        if (cursor >= this.loadFactor * size()) {
-            Node<K, V>[] objects = new Node[2 * size()];
-            System.arraycopy(this.values, 0, objects, 0, size());
-            this.values = objects;
-        }
-    }
-
-    /**
-     * Цикл ищет такой же ключ в массиве.
+     * Цикл ищет такой же ключ в указанном массиве.
      * @param key - ключ.
-     * @return возвращает истиность наличия данного ключа в множестве.
+     * @return возвращает истинность наличия данного ключа в множестве.
      */
-    private boolean doesThisKeyExist(K key) {
+    private boolean doesThisKeyExist(K key, Node<K, V>[] values) {
         boolean result = false;
-        for (Node<K, V> node : this.values) {
+        for (Node<K, V> node : values) {
             if (node != null && node.key.equals(key)) {
                 result = true;
                 break;
@@ -222,7 +216,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     }
 
     /**
-     * Класс является ячейкой пары ключ-значение, так же хранит в себе ссылку на следущую пару.
+     * Класс является ячейкой пары ключ-значение, так же хранит в себе ссылку на следующую пару.
      * @param <K> - ключ.
      * @param <V> - значение.
      */

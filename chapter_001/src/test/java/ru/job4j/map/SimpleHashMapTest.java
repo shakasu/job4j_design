@@ -1,4 +1,3 @@
-/*
 package ru.job4j.map;
 
 import org.junit.Before;
@@ -29,9 +28,9 @@ public class SimpleHashMapTest {
 
     @Test
     public void whenInsertSameKey() {
-        assertThat(map.elements(), is(3));
+        assertThat(map.elementCount(), is(3));
         assertFalse(map.insert(user4, "first"));
-        assertThat(map.elements(), is(3));
+        assertThat(map.elementCount(), is(3));
     }
 
     @Test
@@ -88,8 +87,7 @@ public class SimpleHashMapTest {
         iterator.hasNext();
     }
 
-    */
-/*@Test
+    @Test
     public void growTest() {
         assertThat(map.insert(user1, "1"), is(false));
         assertThat(map.insert(user2, "2"), is(false));
@@ -105,30 +103,17 @@ public class SimpleHashMapTest {
         assertThat(map.insert(new UserBothMethods("11", 11, simpleDate), "11"), is(true));
         assertThat(map.insert(new UserBothMethods("12", 12, simpleDate), "12"), is(true));
         assertThat(map.size(), is(32));
-        assertThat(map.get(user1), is("first"));
-        assertThat(map.get(user2), is("second"));
-        assertThat(map.get(user3), is("third"));
-        assertThat(map.get(new UserBothMethods("4", 4, simpleDate)), is("4"));
-        assertThat(map.get(new UserBothMethods("5", 5, simpleDate)), is("5"));
-        assertThat(map.get(new UserBothMethods("6", 6, simpleDate)), is("6"));
-        assertThat(map.get(new UserBothMethods("7", 7, simpleDate)), is("7"));
-        assertThat(map.get(new UserBothMethods("8", 8, simpleDate)), is("8"));
-        assertThat(map.get(new UserBothMethods("9", 9, simpleDate)), is("9"));
-        assertThat(map.get(new UserBothMethods("10", 10, simpleDate)), is("10"));
-        assertThat(map.get(new UserBothMethods("11", 11, simpleDate)), is("11"));
-        assertThat(map.get(new UserBothMethods("12", 12, simpleDate)), is("12"));
-    }*//*
+    }
 
 
     @Test
     public void deleteTest() {
         assertThat(map.get(user1), is("first"));
         assertThat(map.size(), is(16));
-        assertThat(map.elements(), is(3));
+        assertThat(map.elementCount(), is(3));
         assertTrue(map.delete(user1));
         assertNull(map.get(user1));
-        assertThat(map.size(), is(16));
-        assertThat(map.elements(), is(2));
+        assertThat(map.size(), is(15));
+        assertThat(map.elementCount(), is(2));
     }
 }
-*/
