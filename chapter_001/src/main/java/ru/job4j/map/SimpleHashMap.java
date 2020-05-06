@@ -114,7 +114,10 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      * @return - индекс в который будет помещен элемент в глобальном массиве.
      */
     private int hash(K key) {
+        return key.hashCode() & (size() - 1);
+/*
         return key.hashCode() % size();
+*/
     }
 
     /**
