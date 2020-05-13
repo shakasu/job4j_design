@@ -47,8 +47,8 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      * @return - истинность добавления нового элемента в множество.
      */
     public boolean insert(K key, V value) {
-        boolean result = putVal(key, value, this.values);
         growCheck();
+        boolean result = putVal(key, value, this.values);
         if (result) {
             this.cursor++;
             this.modCount++;
@@ -65,7 +65,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      */
     private boolean putVal(K key, V value, Node<K, V>[] values) {
         boolean result = !doesThisKeyExist(key, values);
-        if (result && key != null && value != null) {
+        if (result && key != null) {
             Node<K, V> newNode = new Node<>(key, value, null);
             if (head == null) {
                 head = newNode;
@@ -115,9 +115,6 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      */
     private int hash(K key) {
         return key.hashCode() & (size() - 1);
-/*
-        return key.hashCode() % size();
-*/
     }
 
     /**
