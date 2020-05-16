@@ -1,6 +1,6 @@
 package ru.job4j.io.archive;
 
-import ru.job4j.io.SearchFiles;
+import ru.job4j.io.base.SearchFiles;
 
 import java.io.*;
 import java.nio.file.Files;

@@ -1,4 +1,4 @@
-package ru.job4j.io;
+package ru.job4j.io.base;
 
 import java.io.File;
 import java.io.IOException;
