@@ -1,9 +1,6 @@
 package ru.job4j.socket;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -15,16 +12,27 @@ public class EchoServer {
                 Socket socket = server.accept();
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(
-                             new InputStreamReader(socket.getInputStream())
-                     )) {
-                    if (in.readLine().contains("?msg=Bye")) {
-                        break;
-                    }
+                             new InputStreamReader(socket.getInputStream()))) {
+                    String answer = "-1";
                     String str;
+                    boolean containsExit = false;
                     while (!(str = in.readLine()).isEmpty()) {
                         System.out.println(str);
+                        //Проверяем, что есть команда Exit
+                        containsExit = (str.contains("msg=Exit")) || containsExit;
+                        //Если str содержить msg=, значит в ней есть команда,
+                        //Вычленяем команду, она находится между msg= и HTT,
+                        //если команды в str нет, то сохраняем ранее найденую команду.
+                        answer = (str.contains("msg=")) ? str.split("msg=")[1].split("HTT")[0] : answer;
                     }
-                    out.write("HTTP/1.1 200 OK\r\n\\".getBytes());
+                    //Если ранее была найдена команда Exit, то выйдем из цикла.
+                    if (containsExit) {
+                        break;
+                    }
+                    //Если команда Hello, то вставляем специальное приветствие, иначе дублируем запрос.
+                    answer = (answer.equals("Hello ")) ? "welcome to the rice fields, buddy" : answer;
+                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                    out.write(answer.getBytes());
                 }
             }
         }
