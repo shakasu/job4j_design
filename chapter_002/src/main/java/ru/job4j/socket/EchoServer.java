@@ -1,12 +1,19 @@
 package ru.job4j.socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.job4j.logs.UsageLog4j;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoServer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
+
     @SuppressWarnings("checkstyle:InnerAssignment")
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(9000)) {
             while (true) {
                 Socket socket = server.accept();
@@ -35,6 +42,8 @@ public class EchoServer {
                     out.write(answer.getBytes());
                 }
             }
+        } catch (IOException ioe) {
+            LOG.error("IOException - ", ioe);
         }
     }
 }
