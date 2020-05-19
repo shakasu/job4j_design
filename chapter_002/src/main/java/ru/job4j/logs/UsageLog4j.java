@@ -8,10 +8,15 @@ public class UsageLog4j {
     private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
 
     public static void main(String[] args) {
-        try {
-            throw new Exception("Not supportable code!");
-        } catch (Exception e) {
-            LOG.error("Exception example", e);
-        }
+       String name = "Karen";
+       int age = 23;
+       boolean creative = true;
+       double height = 179.55;
+       float weight = 65.555f;
+       long amountOfHair = 108846548;
+       char favoriteLetter = 'm';
+       byte psychologicalAge = 35;
+       short myOldWaitressSalary = 15750;
+       LOG.debug("User info name : {}, age : {}, his height {} and weight {}, amount of hair is : {}, his favorite letter is {}, but psychological age is - {},  his old old waitress salary was {} rubles", name, age, height, weight, amountOfHair, favoriteLetter, psychologicalAge, myOldWaitressSalary);
     }
 }
