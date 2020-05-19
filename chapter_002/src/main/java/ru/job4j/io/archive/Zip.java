@@ -5,7 +5,6 @@ import ru.job4j.io.base.SearchFiles;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -20,15 +19,11 @@ public class Zip {
      * @throws IOException - при невалидных входящих параметрах, валидация определена в
      * @see ArgZip
      */
-    public List<File> exclude(String directory, String exclude) throws IOException {
+    public List<Path> exclude(String directory, String exclude) throws IOException {
         Path directoryPath = Path.of(directory);
         SearchFiles searcher = new SearchFiles(p -> !p.toFile().getName().endsWith(exclude));
         Files.walkFileTree(directoryPath, searcher);
-        List<File> result = new ArrayList<>();
-        for (Path path : searcher.getPaths()) {
-            result.add(path.toFile());
-        }
-        return result;
+        return searcher.getPaths();
     }
 
     /**
@@ -36,18 +31,18 @@ public class Zip {
      * @param sources - архивируемый лист файлов.
      * @param target - путь к zip - архиву.
      */
-    public void packFiles(List<File> sources, File target) {
+    public void packFiles(List<Path> sources, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            for (File source : sources) {
-                zip.putNextEntry(new ZipEntry(source.getPath()));
-                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
+            for (Path source : sources) {
+                zip.putNextEntry(new ZipEntry(source.toString()));
+                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(String.valueOf(source)))) {
                     zip.write(out.readAllBytes());
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Success!");
+        System.out.println("___Success!___");
     }
 
     /**

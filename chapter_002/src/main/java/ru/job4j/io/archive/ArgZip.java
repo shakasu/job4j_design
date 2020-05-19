@@ -10,7 +10,13 @@ public class ArgZip {
     /**
      * Конструктор принимает массив параметров.
      */
-    private final String[] args;
+    private String[] args;
+    /**
+     * Константы для читаемости.
+     */
+    private String dir;
+    private String exc;
+    private String out;
 
     public ArgZip(String[] args) {
         this.args = args;
@@ -23,18 +29,21 @@ public class ArgZip {
      * @return - true, если ни одного исключения не упало.
      */
     private boolean valid() {
+        dir = args[1];
+        exc = args[3];
+        out = args[5];
         if (args.length != 6 || !args[0].equals("-d") || !args[2].equals("-e") || !args[4].equals("-o")) {
             throw new IllegalArgumentException(String.format("The arguments to run are not enough.%nPlease observe the following syntax:%n-d path -e .excludeFormat -o name.zip%n%s", Arrays.toString(args)));
         }
-        File directory = new File(args[1]);
+        File directory = new File(dir);
         if (!directory.exists()) {
             throw new IllegalArgumentException(String.format("-d directory not exist %s", directory.getAbsoluteFile()));
         }
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(String.format("-d is not directory %s", directory.getAbsoluteFile()));
         }
-        if (!args[5].endsWith(".zip")) {
-            throw new IllegalArgumentException(String.format("-o is not zip format%n%s", args[5]));
+        if (!out.endsWith(".zip")) {
+            throw new IllegalArgumentException(String.format("-o is not zip format%n%s", out));
         }
         return true;
     }
@@ -44,14 +53,14 @@ public class ArgZip {
      * @return - параметры, прошедшие валидацию.
      */
     public String directory() {
-        return valid() ? args[1] : "-1";
+        return valid() ? dir : "-1";
     }
 
     public String exclude() {
-        return valid() ? args[3] : "-1";
+        return valid() ? exc : "-1";
     }
 
     public String output() {
-        return valid() ? args[5] : "-1";
+        return valid() ? out : "-1";
     }
 }
