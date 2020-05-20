@@ -15,6 +15,9 @@ import java.util.Arrays;
 public class Validator {
     private final String[] args;
 
+    private String dir;
+    private String out;
+
     /**
      * Конструктор получает массив параметров.
      * @param args - параметры.
@@ -32,18 +35,20 @@ public class Validator {
      * @return - true, если ни одно исключение не упало.
      */
     private boolean valid() {
+        dir = args[1];
+        out = args[3];
         if (args.length != 4 || !args[0].equals("-d") || !args[2].equals("-o")) {
             throw new IllegalArgumentException(String.format("The arguments to run are not enough.%nPlease observe the following syntax:%n-d path -o name.txt%n%s", Arrays.toString(args)));
         }
-        File directoryInp = new File(args[1]);
+        File directoryInp = new File(dir);
         if (!directoryInp.exists()) {
             throw new IllegalArgumentException(String.format("-d txt file not exist %s", directoryInp.getAbsoluteFile()));
         }
-        if (!args[1].endsWith(".txt")) {
-            throw new IllegalArgumentException(String.format("-d is not txt format%n%s", args[3]));
+        if (!dir.endsWith(".txt")) {
+            throw new IllegalArgumentException(String.format("-d is not txt format%n%s", dir));
         }
-        if (!args[3].endsWith(".txt")) {
-            throw new IllegalArgumentException(String.format("-o is not txt format%n%s", args[3]));
+        if (!out.endsWith(".txt")) {
+            throw new IllegalArgumentException(String.format("-o is not txt format%n%s", out));
         }
         return true;
     }
@@ -53,10 +58,10 @@ public class Validator {
      * @return - пути файлов.
      */
     public String directory() {
-        return valid() ? args[1] : "-1";
+        return valid() ? dir : "-1";
     }
 
     public String output() {
-        return valid() ? args[3] : "-1";
+        return valid() ? out : "-1";
     }
 }
