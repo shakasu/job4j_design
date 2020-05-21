@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 
 public class ZipTest {
 
-    @Rule
+    /*@Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
@@ -27,7 +27,7 @@ public class ZipTest {
         List<Path> result = zip.exclude(directory, ".java");
         List<Path> expected = List.of(file1.toPath(), file3.toPath(), file4.toPath());
         assertThat(result, is(expected));
-    }
+    }*/
 
     /*@Test
     public void archiveTest() throws IOException {
