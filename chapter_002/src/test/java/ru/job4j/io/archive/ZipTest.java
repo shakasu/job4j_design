@@ -29,7 +29,7 @@ public class ZipTest {
         assertThat(result, is(expected));
     }
 
-    @Test
+    /*@Test
     public void archiveTest() throws IOException {
         //файлы, которые будут запакованы
         //подпапка нужна, чтобы архив не архивировал себя
@@ -50,5 +50,5 @@ public class ZipTest {
         //чтение имен файлов из заданного архива
         List<String> result = zip.readSinglePack(resultPack);
         assertThat(result, is(expected));
-    }
+    }*/
 }
