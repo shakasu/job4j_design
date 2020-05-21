@@ -40,13 +40,13 @@ public class ZipTest {
         File file4 = folder.newFile("files/file4.txt");
         Zip zip = new Zip();
         //путь, где хранятся эти 4 файла
-        String directory = file1.getAbsolutePath().split("file1")[0];
+        String directory = file1.getCanonicalPath().split("file1")[0];
         //архив в другой временной папке
         File resultPack = folder.newFile("result.zip");
         //помещение файлов в архив
         zip.packFiles(zip.exclude(directory, ".java"), resultPack);
         //ожидаемых список имен
-        List<String> expected = List.of(file1.getAbsolutePath(), file3.getAbsolutePath(), file4.getAbsolutePath());
+        List<String> expected = List.of(file1.getCanonicalPath(), file3.getCanonicalPath(), file4.getCanonicalPath());
         //чтение имен файлов из заданного архива
         List<String> result = zip.readSinglePack(resultPack);
         assertThat(result, is(expected));

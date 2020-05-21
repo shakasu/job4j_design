@@ -2,6 +2,7 @@ package ru.job4j.control;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.job4j.control.Analysis;
 
 import java.util.ArrayList;
 import java.util.List;

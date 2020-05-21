@@ -70,7 +70,6 @@ public class Zip {
         List<String> list = new ArrayList<>();
         try (ZipInputStream zin = new ZipInputStream(new FileInputStream(source))) {
             ZipEntry entry;
-            String name;
             while ((entry = zin.getNextEntry()) != null) {
                 list.add(entry.getName());
             }
