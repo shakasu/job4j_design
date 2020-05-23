@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 
 public class ZipTest {
 
-    /*@Rule
+    @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
@@ -23,13 +23,13 @@ public class ZipTest {
         File file3 = folder.newFile("file3.txt");
         File file4 = folder.newFile("file4.txt");
         Zip zip = new Zip();
-        String directory = file1.getAbsolutePath().split("file1")[0];
+        String directory = folder.getRoot().getAbsolutePath();
         List<Path> result = zip.exclude(directory, ".java");
         List<Path> expected = List.of(file1.toPath(), file3.toPath(), file4.toPath());
         assertThat(result, is(expected));
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void archiveTest() throws IOException {
         //файлы, которые будут запакованы
         //подпапка нужна, чтобы архив не архивировал себя
@@ -50,5 +50,5 @@ public class ZipTest {
         //чтение имен файлов из заданного архива
         List<String> result = zip.readSinglePack(resultPack);
         assertThat(result, is(expected));
-    }*/
+    }
 }
