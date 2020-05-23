@@ -40,7 +40,7 @@ public class ZipTest {
         File file4 = folder.newFile("files/file4.txt");
         Zip zip = new Zip();
         //путь, где хранятся эти 4 файла
-        String directory = file1.getCanonicalPath().split("file1")[0];
+        String directory = folder.getRoot().getAbsolutePath();
         //архив в другой временной папке
         File resultPack = folder.newFile("result.zip");
         //помещение файлов в архив
