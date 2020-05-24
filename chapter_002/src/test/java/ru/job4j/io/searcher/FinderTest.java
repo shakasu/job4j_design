@@ -11,7 +11,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -41,11 +43,11 @@ public class FinderTest {
         Finder finder = new Finder(new Validator(args));
         finder.init();
         //сравнение
-        List<String> result = new ArrayList<>();
+        Set<String> result = new HashSet<>();
         try (BufferedReader in = new BufferedReader(new FileReader(resultFile))) {
             in.lines().forEach(result::add);
         }
-        List<String> expected = List.of(file1.getName(), file2.getName());
+        Set<String> expected = Set.of(file1.getName(), file2.getName());
         assertThat(result, is(expected));
     }
 
@@ -95,11 +97,11 @@ public class FinderTest {
         Finder finder = new Finder(new Validator(args));
         finder.init();
         //сравнение
-        List<String> result = new ArrayList<>();
+        Set<String> result = new HashSet<>();
         try (BufferedReader in = new BufferedReader(new FileReader(resultFile))) {
             in.lines().forEach(result::add);
         }
-        List<String> expected = List.of(file1.getName(), file2.getName(), file3.getName());
+        Set<String> expected = Set.of(file1.getName(), file2.getName(), file3.getName());
         assertThat(result, is(expected));
     }
 }

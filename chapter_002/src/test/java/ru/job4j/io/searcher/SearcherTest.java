@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -40,8 +42,8 @@ public class SearcherTest {
         file2.createNewFile();
         file3.createNewFile();
         Searcher searcher = new Searcher(folder.getRoot().toPath(), p -> p.toFile().getName().endsWith("txt"));
-        List<Path> expected = List.of(file1.toPath(), file2.toPath());
-        List<Path> result = searcher.find();
+        Set<Path> result = new HashSet<>(searcher.find());
+        Set<Path> expected = Set.of(file1.toPath(), file2.toPath());
         assertThat(result, is(expected));
     }
 }
