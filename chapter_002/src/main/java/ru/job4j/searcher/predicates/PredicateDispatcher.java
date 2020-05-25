@@ -1,7 +1,6 @@
 package ru.job4j.searcher.predicates;
 
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -14,7 +13,7 @@ public class PredicateDispatcher {
     /**
      * Карта - диспетчер.
      */
-    private final Map<String, Predicate<Path>> dispatch = new HashMap<>();
+    private final Map<String, Predicate<Path>> dispatch;
 
     /**
      * Константы для ключей.
@@ -37,25 +36,18 @@ public class PredicateDispatcher {
     public PredicateDispatcher(String expression, String type) {
         this.expression = expression;
         this.type = type;
-        this.init();
+        this.dispatch = immutableMap();
     }
 
     /**
-     * Метод погружает в карту пару ключ-значение.
-     * @param type - тип поиска.
-     * @param handle - сгенерированный предикат.
+     * Метод генерирует и возвращает immutable карту.
      */
-    private void load(String type, Predicate<Path> handle) {
-        this.dispatch.put(type, handle);
-    }
-
-    /**
-     * Заполнитель карты.
-     */
-    private void init() {
-        this.load(FULL, this.fullName());
-        this.load(MASK, this.mask());
-        this.load(REGULAR, this.regularExpression());
+    private Map<String, Predicate<Path>> immutableMap() {
+        return Map.of(
+                FULL, this.fullName(),
+                MASK, this.mask(),
+                REGULAR, this.regularExpression()
+        );
     }
 
     /**
