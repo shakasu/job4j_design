@@ -53,9 +53,9 @@ public class ZipTest {
         zip.packFiles(zip.exclude(directory, ".java"), resultPack);
         //ожидаемых список имен
         Set<String> expected = new HashSet<>();
-        expected.add(file1.getCanonicalPath());
-        expected.add(file3.getCanonicalPath());
         expected.add(file4.getCanonicalPath());
+        expected.add(file3.getCanonicalPath());
+        expected.add(file1.getCanonicalPath());
         //чтение имен файлов из заданного архива
         Set<String> result = zip.readSinglePack(resultPack);
         assertThat(result, is(expected));
