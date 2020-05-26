@@ -5,8 +5,9 @@ import ru.job4j.io.base.SearchFiles;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -66,18 +67,19 @@ public class Zip {
     /**
      * Метод чтения файлов из архива
      */
-    public List<String> readSinglePack(File source) {
-        List<String> list = new ArrayList<>();
+    public Set<String> readSinglePack(File source) {
+        Set<String> set = new HashSet<>();
         try (ZipInputStream zin = new ZipInputStream(new FileInputStream(source))) {
             ZipEntry entry;
             while ((entry = zin.getNextEntry()) != null) {
-                list.add(entry.getName());
+                set.add(entry.getName());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+        return set;
     }
+
 
     /**
      * параметры запуска:

@@ -7,6 +7,7 @@ import org.junit.rules.TemporaryFolder;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -50,9 +51,9 @@ public class ZipTest {
         //помещение файлов в архив
         zip.packFiles(zip.exclude(directory, ".java"), resultPack);
         //ожидаемых список имен
-        List<String> expected = List.of(file1.getCanonicalPath(), file3.getCanonicalPath(), file4.getCanonicalPath());
+        Set<String> expected = Set.of(file1.getCanonicalPath(), file3.getCanonicalPath(), file4.getCanonicalPath());
         //чтение имен файлов из заданного архива
-        List<String> result = zip.readSinglePack(resultPack);
+        Set<String> result = zip.readSinglePack(resultPack);
         assertThat(result, is(expected));
     }
 }
