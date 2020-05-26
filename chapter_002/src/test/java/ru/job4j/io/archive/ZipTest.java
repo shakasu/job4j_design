@@ -28,8 +28,11 @@ public class ZipTest {
         Zip zip = new Zip();
         String directory = folder.getRoot().getAbsolutePath();
         List<Path> result = zip.exclude(directory, ".java");
-        List<Path> expected = List.of(file1.toPath(), file3.toPath(), file4.toPath());
+        List<Path> expected = new ArrayList<>(List.of(file1.toPath(), file3.toPath(), file4.toPath()));
+        result.sort(Comparator.naturalOrder());
+        expected.sort(Comparator.naturalOrder());
         assertThat(result, is(expected));
+
     }
 
     @Test
