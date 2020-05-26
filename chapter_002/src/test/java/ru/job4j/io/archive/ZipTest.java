@@ -6,6 +6,7 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -51,7 +52,10 @@ public class ZipTest {
         //помещение файлов в архив
         zip.packFiles(zip.exclude(directory, ".java"), resultPack);
         //ожидаемых список имен
-        Set<String> expected = Set.of(file1.getCanonicalPath(), file3.getCanonicalPath(), file4.getCanonicalPath());
+        Set<String> expected = new HashSet<>();
+        expected.add(file1.getCanonicalPath());
+        expected.add(file3.getCanonicalPath());
+        expected.add(file4.getCanonicalPath());
         //чтение имен файлов из заданного архива
         Set<String> result = zip.readSinglePack(resultPack);
         assertThat(result, is(expected));
