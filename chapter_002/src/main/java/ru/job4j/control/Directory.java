@@ -4,6 +4,12 @@ import java.util.Stack;
 
 class Shell {
 
+    private final static String SEPARATOR = "/";
+    private final static String BACKWARD = "..";
+    private final static String HOME = "//";
+    private final static String EMPTY = "";
+    private final static String REGEX_FOR_NORMALIZATION = "[. /]";
+
     /**
      * Стек для хранения пути.
      */
@@ -15,36 +21,19 @@ class Shell {
     private String addedPath;
 
     /**
-     * Константы.
-     */
-    private final static String SEPARATOR = "/";
-    private final static String BACKWARD = "..";
-    private final static String HOME = "//";
-    private final static String EMPTY = "";
-    private final static String REGEX_FOR_NORMALIZATION = "[. /]";
-
-
-    /**
      * Метод обработки команды.
      */
     private void processing() {
-        // если команда содержит возврат, то удалим одну директорию
         if (addedPath.contains(BACKWARD)) {
             if (!path.empty()) {
-                //либо из конечного пути
                 path.pop();
             } else {
-                //либо из команды, так как конечный путь в данный момент пустой
                 addedPath = EMPTY;
             }
-            // в конце данной обработки удаляем из команды символы
         } else {
-            // иначе, если в начале команды есть возврат в корень
             if (addedPath.contains(HOME)) {
-                //то просто очищаем путь
                 path.clear();
             }
-            // в конце данной обработку удаляем из команды символы
         }
         normalize();
         append();
