@@ -1,31 +1,32 @@
 --table creation
-CREATE TABLE comments (
-    id serial PRIMARY KEY,
-    name VARCHAR (2000),
-    text VARCHAR (2000)
-);
-CREATE TABLE attach (
-    id serial PRIMARY KEY,
-    name VARCHAR (2000),
-    text VARCHAR (2000)
-);
-CREATE TABLE item (
-    id serial PRIMARY KEY,
-    name VARCHAR (2000),
-    attach_id INT REFERENCES attach (id),
-    comments_id INT REFERENCES comments (id)
-);
 CREATE TABLE state (
     id serial PRIMARY KEY,
     name VARCHAR (2000),
-    item_id INT REFERENCES item (id),
     switch BOOL
 );
 CREATE TABLE category (
     id serial PRIMARY KEY,
     name VARCHAR(2000),
-    item_id INT REFERENCES item (id),
     category_number INT
+);
+CREATE TABLE item (
+    id serial PRIMARY KEY,
+    name VARCHAR (2000),
+    state_id INT REFERENCES state (id),
+    category_id INT REFERENCES category (id)
+);
+CREATE TABLE comments (
+    id serial PRIMARY KEY,
+    name VARCHAR (2000),
+    text VARCHAR (2000),
+    item_id INT REFERENCES item (id)
+);
+CREATE TABLE attach (
+    id serial PRIMARY KEY,
+    name VARCHAR (2000),
+    text VARCHAR (2000),
+    item_id INT REFERENCES item (id)
+
 );
 CREATE TABLE user_list (
     id serial PRIMARY KEY,
