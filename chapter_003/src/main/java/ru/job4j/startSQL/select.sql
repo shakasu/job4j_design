@@ -26,31 +26,49 @@ values ('пломбир мороженное', 3, '2020-09-08 04:05:06', 70);
 
 --1. Написать запрос получение всех продуктов с типом "СЫР"
 select *
-from product as p inner join type as t
-on p.type_id = t.id
-where t.name = 'СЫР';
+from
+    product as p inner join type as t
+on
+    p.type_id = t.id
+where
+    t.name = 'СЫР';
 --2. Написать запрос получения всех продуктов, у кого в имени есть слово "мороженное"
-select * from product where name like '%мороженное%';
+select *
+from product
+where
+    name like '%мороженное%';
 --3. Написать запрос, который выводит все продукты, срок годности которых заканчивается в следующем месяце.
 select *
 from product as p
-where extract(month from expired_date) = date_part('month', current_date) + 1;
+where
+--не просрочен на данный момент
+	current_date < p.expired_date
+and
+	extract(month from expired_date) = mod(cast(extract(month from current_date) + 1 as int), 12);
 --4. Написать запрос, который выводит самый дорогой продукт.
 select *
 from product
-where price = (SELECT MAX(price) FROM product);
+where
+    price = (SELECT MAX(price) FROM product);
 --5. Написать запрос, который выводит количество всех продуктов определенного типа.
-select count(*) from product where type_id = 1;
+select count(*)
+from product
+where type_id = 1;
 --6. Написать запрос получение всех продуктов с типом "СЫР" и "МОЛОКО"
 select *
-from product as p inner join type as t
-on p.type_id = t.id
-where t.name = 'СЫР' or t.name = 'МОЛОКО';
+from
+    product as p inner join type as t
+on
+    p.type_id = t.id
+where
+    t.name = 'СЫР' or t.name = 'МОЛОКО';
 --7. Написать запрос, который выводит тип продуктов, которых осталось меньше 10 штук.
-select t.name from product as p
+select t.name
+from product as p
 inner join type as t on p.type_id = t.id
 group by t.name
 having count(t.id) < 10;
 --8. Вывести все продукты и их тип.
-select * from product as p
+select *
+from product as p
 inner join type as t on p.type_id = t.id;
