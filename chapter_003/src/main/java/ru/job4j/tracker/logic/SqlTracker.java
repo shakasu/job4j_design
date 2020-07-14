@@ -43,29 +43,21 @@ public class SqlTracker implements Store {
      */
     @Override
     public Item add(Item item) {
-        try {
-            PreparedStatement st = cn.prepareStatement(
-                    "insert into items(name, priority) values(?, ?)",
-                    Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement st = cn.prepareStatement(
+                "insert into items(name, priority) values(?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
+             ResultSet generatedKeys = st.getGeneratedKeys()
+        ) {
             st.setString(1, item.getName());
             st.setInt(2, item.getPriority());
             st.executeUpdate();
-            ResultSet generatedKeys = st.getGeneratedKeys();
-            if (generatedKeys.next()) {
+            while (generatedKeys.next()) {
                 int id = generatedKeys.getInt(1);
-                /*System.out.printf("new item added, it`s id - %s", id);*/
                 item.setId(String.valueOf(id));
+                System.out.printf("id - %s", id);
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (cn != null) {
-                try {
-                    cn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return item;
     }
@@ -80,23 +72,14 @@ public class SqlTracker implements Store {
     @Override
     public boolean replace(String id, Item item) {
         boolean result = false;
-        try {
-            PreparedStatement st = cn.prepareStatement("update items set (name, priority) = (?, ?) where id = ?");
+        try (PreparedStatement st = cn.prepareStatement("update items set (name, priority) = (?, ?) where id = ?")) {
             st.setString(1, item.getName());
             st.setInt(2, item.getPriority());
             st.setInt(3, Integer.parseInt(id));
             st.executeUpdate();
-            result = true;
+            result = st.executeUpdate() > 0;
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (cn != null) {
-                try {
-                    cn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return result;
     }
@@ -110,21 +93,12 @@ public class SqlTracker implements Store {
     @Override
     public boolean delete(String id) {
         boolean result = false;
-        try {
-            PreparedStatement st = cn.prepareStatement("delete from items where id = ?");
+        try (PreparedStatement st = cn.prepareStatement("delete from items where id = ?")) {
             st.setInt(1, Integer.parseInt(id));
             st.executeUpdate();
-            result = true;
+            result = st.executeUpdate() > 0;
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (cn != null) {
-                try {
-                    cn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return result;
     }
@@ -137,9 +111,8 @@ public class SqlTracker implements Store {
     @Override
     public List<Item> findAll() {
         List<Item> result = new ArrayList<>();
-        try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery("select * from items");
+        try (Statement st = cn.createStatement();
+             ResultSet rs = st.executeQuery("select * from items")) {
             while (rs.next()) {
                 result.add(
                         new Item(
@@ -150,14 +123,6 @@ public class SqlTracker implements Store {
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (cn != null) {
-                try {
-                    cn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return result;
     }
@@ -171,10 +136,10 @@ public class SqlTracker implements Store {
     @Override
     public List<Item> findByName(String key) {
         List<Item> result = new ArrayList<>();
-        try {
-            PreparedStatement st = cn.prepareStatement("select * from items as i where i.name = ?");
+        try (PreparedStatement st = cn.prepareStatement("select * from items as i where i.name = ?");
+             ResultSet rs = st.executeQuery()
+        ) {
             st.setString(1, key);
-            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 result.add(
                         new Item(
@@ -185,30 +150,23 @@ public class SqlTracker implements Store {
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (cn != null) {
-                try {
-                    cn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return result;
     }
 
     /**
      * Метод вернет из базы заявку с соответствующим id.
+     *
      * @param id - уникальное поле заявки.
      * @return - заявка.
      */
     @Override
     public Item findById(String id) {
         Item result = null;
-        try {
-            PreparedStatement st = cn.prepareStatement("select * from items as i where i.id = ?");
+        try (PreparedStatement st = cn.prepareStatement("select * from items as i where i.id = ?");
+             ResultSet rs = st.executeQuery()
+        ) {
             st.setInt(1, Integer.parseInt(id));
-            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 result = new Item(
                         rs.getString("name"),
@@ -218,14 +176,6 @@ public class SqlTracker implements Store {
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (cn != null) {
-                try {
-                    cn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return result;
     }
@@ -244,7 +194,7 @@ public class SqlTracker implements Store {
             System.out.printf("%s, %s, %d%n", curItem.getId(), curItem.getName(), curItem.getPriority());
         }*/
         /*sqlTracker.add(item);*/
-        /*sqlTracker.delete("1");*/
+        sqlTracker.delete("1");
         /*sqlTracker.replace("3", item2);*/
     }
 }
