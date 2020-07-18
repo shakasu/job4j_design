@@ -11,7 +11,16 @@ import java.util.Properties;
 
 public class SqlTracker implements Store {
     private static final Logger LOG = LoggerFactory.getLogger(SqlTracker.class.getName());
+
     private Connection cn;
+
+    public SqlTracker() {
+
+    }
+
+    public SqlTracker(Connection cn) {
+        this.cn = cn;
+    }
 
     public void init() {
         try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
@@ -46,15 +55,15 @@ public class SqlTracker implements Store {
         try (PreparedStatement st = cn.prepareStatement(
                 "insert into items(name, priority) values(?, ?)",
                 Statement.RETURN_GENERATED_KEYS);
-             ResultSet generatedKeys = st.getGeneratedKeys()
         ) {
             st.setString(1, item.getName());
             st.setInt(2, item.getPriority());
             st.executeUpdate();
-            while (generatedKeys.next()) {
-                int id = generatedKeys.getInt(1);
-                item.setId(String.valueOf(id));
-                System.out.printf("id - %s", id);
+            try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    item.setId(generatedKeys.getString(1));
+                    return item;
+                }
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -136,17 +145,17 @@ public class SqlTracker implements Store {
     @Override
     public List<Item> findByName(String key) {
         List<Item> result = new ArrayList<>();
-        try (PreparedStatement st = cn.prepareStatement("select * from items as i where i.name = ?");
-             ResultSet rs = st.executeQuery()
-        ) {
+        try (PreparedStatement st = cn.prepareStatement("select * from items as i where i.name = ?")) {
             st.setString(1, key);
-            while (rs.next()) {
-                result.add(
-                        new Item(
-                                rs.getString("name"),
-                                rs.getInt("priority"),
-                                String.valueOf(rs.getInt("id"))
-                        ));
+            try (ResultSet rs = st.executeQuery()) {
+               while (rs.next()) {
+                   result.add(
+                           new Item(
+                                   rs.getString("name"),
+                                   rs.getInt("priority"),
+                                   String.valueOf(rs.getInt("id"))
+                           ));
+               }
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -163,16 +172,16 @@ public class SqlTracker implements Store {
     @Override
     public Item findById(String id) {
         Item result = null;
-        try (PreparedStatement st = cn.prepareStatement("select * from items as i where i.id = ?");
-             ResultSet rs = st.executeQuery()
-        ) {
+        try (PreparedStatement st = cn.prepareStatement("select * from items as i where i.id = ?")) {
             st.setInt(1, Integer.parseInt(id));
-            while (rs.next()) {
-                result = new Item(
-                        rs.getString("name"),
-                        rs.getInt("priority"),
-                        String.valueOf(rs.getInt("id"))
-                );
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    result = new Item(
+                            rs.getString("name"),
+                            rs.getInt("priority"),
+                            String.valueOf(rs.getInt("id"))
+                    );
+                }
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -180,21 +189,21 @@ public class SqlTracker implements Store {
         return result;
     }
 
-    public static void main(String[] args) {
-        Item item = new Item("name", 12);
-        Item item2 = new Item("updated name", 666);
-        SqlTracker sqlTracker = new SqlTracker();
-        sqlTracker.init();
-        /*Item testItem = sqlTracker.findById("2");
-        System.out.printf("%s, %s, %d%n", testItem.getId(), testItem.getName(), testItem.getPriority());*/
-        /*for (Item curItem : sqlTracker.findByName("name")) {
-            System.out.printf("%s, %s, %d%n", curItem.getId(), curItem.getName(), curItem.getPriority());
-        }*/
-        /*for (Item curItem : sqlTracker.findAll()) {
-            System.out.printf("%s, %s, %d%n", curItem.getId(), curItem.getName(), curItem.getPriority());
-        }*/
-        /*sqlTracker.add(item);*/
-        sqlTracker.delete("1");
-        /*sqlTracker.replace("3", item2);*/
-    }
+//    public static void main(String[] args) {
+//        Item item = new Item("name", 12);
+//        Item item2 = new Item("updated name", 666);
+//        SqlTracker sqlTracker = new SqlTracker();
+//        sqlTracker.init();
+//        Item testItem = sqlTracker.findById("2");
+//        System.out.printf("%s, %s, %d%n", testItem.getId(), testItem.getName(), testItem.getPriority());
+//        for (Item curItem : sqlTracker.findByName("name")) {
+//            System.out.printf("%s, %s, %d%n", curItem.getId(), curItem.getName(), curItem.getPriority());
+//        }
+//        for (Item curItem : sqlTracker.findAll()) {
+//            System.out.printf("%s, %s, %d%n", curItem.getId(), curItem.getName(), curItem.getPriority());
+//        }
+//        sqlTracker.add(item);
+//        sqlTracker.delete("1");
+//        sqlTracker.replace("3", item2);
+//    }
 }
