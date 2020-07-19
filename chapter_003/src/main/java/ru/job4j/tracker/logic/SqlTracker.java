@@ -54,7 +54,7 @@ public class SqlTracker implements Store {
     public Item add(Item item) {
         try (PreparedStatement st = cn.prepareStatement(
                 "insert into items(name, priority) values(?, ?)",
-                Statement.RETURN_GENERATED_KEYS);
+                Statement.RETURN_GENERATED_KEYS)
         ) {
             st.setString(1, item.getName());
             st.setInt(2, item.getPriority());
@@ -188,22 +188,4 @@ public class SqlTracker implements Store {
         }
         return result;
     }
-
-//    public static void main(String[] args) {
-//        Item item = new Item("name", 12);
-//        Item item2 = new Item("updated name", 666);
-//        SqlTracker sqlTracker = new SqlTracker();
-//        sqlTracker.init();
-//        Item testItem = sqlTracker.findById("2");
-//        System.out.printf("%s, %s, %d%n", testItem.getId(), testItem.getName(), testItem.getPriority());
-//        for (Item curItem : sqlTracker.findByName("name")) {
-//            System.out.printf("%s, %s, %d%n", curItem.getId(), curItem.getName(), curItem.getPriority());
-//        }
-//        for (Item curItem : sqlTracker.findAll()) {
-//            System.out.printf("%s, %s, %d%n", curItem.getId(), curItem.getName(), curItem.getPriority());
-//        }
-//        sqlTracker.add(item);
-//        sqlTracker.delete("1");
-//        sqlTracker.replace("3", item2);
-//    }
 }
