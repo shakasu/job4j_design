@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AppCache {
@@ -39,7 +40,7 @@ public class AppCache {
      */
     public String get(String name) throws IOException {
         if (!cache.containsKey(name)) {
-            load();
+            load(name);
         }
         return cache.get(name);
     }
@@ -49,12 +50,10 @@ public class AppCache {
      * and insert it in cache map.
      * @throws IOException
      */
-    private void load() throws IOException {
-        List<Path> files = Files.list(systemPath).filter(p -> p.toString().endsWith(".txt")).collect(Collectors.toList());
+    private void load(String name) throws IOException {
         Files.copy(systemPath, cacheFolder, StandardCopyOption.REPLACE_EXISTING);
-        for (Path file : files) {
-            cache.put(file.getFileName().toString(), read(file));
-        }
+        Path file = Files.list(systemPath).filter(p -> p.toString().endsWith(name)).findFirst().orElseThrow();
+        cache.put(file.getFileName().toString(), read(file));
     }
 
     /**
