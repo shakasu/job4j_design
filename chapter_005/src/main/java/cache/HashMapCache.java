@@ -28,8 +28,7 @@ public class HashMapCache<K, V> implements Cache<K, V>{
      */
     @Override
     public V put(K key, V value) {
-        SoftReference<V> cell = container.put(key, new SoftReference<>(value));
-        return (cell != null) ? cell.get() : null;
+        return (container.put(key, new SoftReference<>(value)) == null) ? container.get(key).get() : null;
     }
 
     /**

@@ -39,10 +39,7 @@ public class AppCache {
      * @throws IOException
      */
     public String get(String name) throws IOException {
-        if (!cache.containsKey(name)) {
-            load(name);
-        }
-        return cache.get(name);
+        return (!cache.containsKey(name)) ? load(name) : cache.get(name);
     }
 
     /**
@@ -50,10 +47,10 @@ public class AppCache {
      * and insert it in cache map.
      * @throws IOException
      */
-    private void load(String name) throws IOException {
+    private String load(String name) throws IOException {
         Files.copy(systemPath, cacheFolder, StandardCopyOption.REPLACE_EXISTING);
         Path file = Files.list(systemPath).filter(p -> p.toString().endsWith(name)).findFirst().orElseThrow();
-        cache.put(file.getFileName().toString(), read(file));
+        return cache.put(file.getFileName().toString(), read(file));
     }
 
     /**
