@@ -6,8 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class AppCache {
     private final HashMapCache<String, String> cache;
@@ -39,7 +37,18 @@ public class AppCache {
      * @throws IOException
      */
     public String get(String name) throws IOException {
-        return (!cache.containsKey(name)) ? load(name) : cache.get(name);
+        String content = "";
+        if (cache.containsKey(name)) {
+            content = cache.get(name);
+            if (content == null) {
+                content = load(name);
+                cache.put(name, content);
+            }
+        } else {
+            content = load(name);
+            cache.put(name, content);
+        }
+        return content;
     }
 
     /**
