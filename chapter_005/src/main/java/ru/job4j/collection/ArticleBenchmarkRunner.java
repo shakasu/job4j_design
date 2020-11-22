@@ -1,4 +1,4 @@
-package collection;
+package ru.job4j.collection;
 
 import org.openjdk.jmh.annotations.Benchmark;
 

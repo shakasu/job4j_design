@@ -1,4 +1,4 @@
-package cache;
+package ru.job4j.cache;
 
 /**
  * Interface define cache for some objects with some key for any container.

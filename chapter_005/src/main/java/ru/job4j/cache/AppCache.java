@@ -1,4 +1,4 @@
-package cache;
+package ru.job4j.cache;
 
 import java.io.IOException;
 import java.nio.file.Files;

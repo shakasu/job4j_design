@@ -1,4 +1,4 @@
-package cache;
+package ru.job4j.cache;
 
 import java.lang.ref.SoftReference;
 import java.util.HashMap;

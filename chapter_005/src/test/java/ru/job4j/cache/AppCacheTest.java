@@ -1,9 +1,11 @@
-package cache;
+package ru.job4j.cache;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import ru.job4j.cache.AppCache;
+import ru.job4j.cache.Writer;
 
 import java.io.File;
 import java.io.IOException;

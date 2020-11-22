@@ -1,4 +1,4 @@
-package cache;
+package ru.job4j.cache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

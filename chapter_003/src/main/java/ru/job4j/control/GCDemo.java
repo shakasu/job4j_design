@@ -11,7 +11,7 @@ public class GCDemo {
     public static void main(String[] args) {
         long startFreeSpace = free();
         System.out.printf("start free space = %d byte%n", startFreeSpace);
-        for (int i = 0; i < 120; i++) {
+        for (int i = 0; i < 1000; i++) {
             new User(i, "N");
             System.out.printf(
                     "*%d*%nfree space now - %d byte%njust spent - %d byte%n",

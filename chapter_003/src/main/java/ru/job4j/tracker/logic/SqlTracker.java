@@ -145,7 +145,9 @@ public class SqlTracker implements Store {
     @Override
     public List<Item> findByName(String key) {
         List<Item> result = new ArrayList<>();
-        try (PreparedStatement st = cn.prepareStatement("select * from items as i where i.name = ?")) {
+        try (PreparedStatement st = cn.prepareStatement(
+                "select * from items as i where i.name = ?"
+        )) {
             st.setString(1, key);
             try (ResultSet rs = st.executeQuery()) {
                while (rs.next()) {
