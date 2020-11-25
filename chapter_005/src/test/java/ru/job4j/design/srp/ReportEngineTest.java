@@ -82,9 +82,9 @@ public class ReportEngineTest {
         Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Ivan", now, now, 100);
         store.add(worker);
-        AccountantEngine engine = new AccountantEngine(store);
+        AccountantEngine engine = new AccountantEngine(store, new RUBConverter());
         StringBuilder expect = new StringBuilder()
-                .append("Name; Hired; Fired; Salary;")
+                .append("Name; Salary;")
                 .append(System.lineSeparator())
                 .append(worker.getName()).append(";")
                 .append(worker.getHired()).append(";")
