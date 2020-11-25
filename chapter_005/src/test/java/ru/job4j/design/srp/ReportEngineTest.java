@@ -93,4 +93,47 @@ public class ReportEngineTest {
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
 
+    @Test
+    public void whenXmlGenerated() {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker = new Employee("Ivan", now, now, 100);
+        store.add(worker);
+        Engine engine = new XMLEngine(store);
+        StringBuilder expect = new StringBuilder()
+                .append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
+                .append("<root>").append("<row>")
+                .append(String.format("<name>%s</name>", worker.getName()))
+                .append(String.format("<hired>%s</<hired>>", worker.getHired()))
+                .append(String.format("<fired>%s</fired>", worker.getFired()))
+                .append(String.format("<salary>%s</salary>", worker.getName()))
+                .append("</row>").append("</root>");
+        assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
+
+    @Test
+    public void whenJSONGenerated() {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker = new Employee("Ivan", now, now, 100);
+        store.add(worker);
+        store.add(worker);
+        Engine engine = new JSONEngine(store);
+        StringBuilder expect = new StringBuilder()
+                .append("[")
+                .append("{")
+                .append(String.format("\"name\": \"%s\",", worker.getName()))
+                .append(String.format("\"hired\": \"%s\",", worker.getHired()))
+                .append(String.format("\"fired\": \"%s\",", worker.getFired()))
+                .append(String.format("\"salary\": \"%s\"", worker.getSalary()))
+                .append("},")
+                .append("{")
+                .append(String.format("\"name\": \"%s\",", worker.getName()))
+                .append(String.format("\"hired\": \"%s\",", worker.getHired()))
+                .append(String.format("\"fired\": \"%s\",", worker.getFired()))
+                .append(String.format("\"salary\": \"%s\"", worker.getSalary()))
+                .append("}")
+                .append("]");
+        assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
 }
