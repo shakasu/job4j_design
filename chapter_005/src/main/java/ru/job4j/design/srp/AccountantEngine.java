@@ -19,7 +19,7 @@ public class AccountantEngine implements Engine {
             text.append(employee.getName()).append(";")
                     .append(employee.getHired()).append(";")
                     .append(employee.getFired()).append(";")
-                    .append(converter.getFactor() * employee.getSalary()).append(";");
+                    .append(converter.getSalary(employee)).append(";");
 
         }
         return text.toString();
