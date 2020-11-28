@@ -6,6 +6,7 @@ import ru.job4j.design.lsp.storage.storages.Storage;
 import ru.job4j.design.lsp.storage.storages.Trash;
 import ru.job4j.design.lsp.storage.storages.Warehouse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControlQuality {
@@ -17,6 +18,17 @@ public class ControlQuality {
 
     public ControlQuality(Shop shop, Warehouse warehouse, Trash trash) {
         this.storages = List.of(shop, warehouse, trash);
+    }
+
+    public void resort() {
+        List<Food> forSorting = new ArrayList<>();
+        for (Storage storage : storages) {
+            forSorting.addAll(storage.clear());
+        }
+        // in this moment storages completely empty.
+        for (Food item : forSorting) {
+            distribute(item);
+        }
     }
 
     public void distribute(Food food) {
