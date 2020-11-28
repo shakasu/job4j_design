@@ -1,4 +1,4 @@
-package ru.job4j.design.lsp.model;
+package ru.job4j.design.lsp.storage.model;
 
 import java.util.Calendar;
 

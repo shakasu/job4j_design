@@ -1,6 +1,6 @@
-package ru.job4j.design.lsp.storage;
+package ru.job4j.design.lsp.storage.storages;
 
-import ru.job4j.design.lsp.model.Food;
+import ru.job4j.design.lsp.storage.model.Food;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +25,15 @@ public class Warehouse implements Storage {
     }
 
     @Override
-    public List<Food> getAll() {
-        return list;
+    public boolean accept(Food food) {
+        return food.expirationProgress() > WAREHOUSE && food.expirationProgress() < SHOP;
+    }
+
+    @Override
+    public List<Food> clear() {
+        List<Food> result = list;
+        list.clear();
+        return result;
     }
 
     @Override
