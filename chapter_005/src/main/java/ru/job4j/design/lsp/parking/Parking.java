@@ -1,20 +1,30 @@
 package ru.job4j.design.lsp.parking;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Base implementation of Parkable.
  */
 public class Parking implements Parkable {
-    Place place;
+   int space;
+   List<Car> cars;
 
-    public Parking(Place place) {
-        this.place = place;
+
+    public Parking(int space) {
+        this.space = space;
+        cars = new ArrayList<>();
     }
 
     @Override
-    public void takeSpace(Car car) {
+    public void letIn(Car car) {
+        space = space - car.size();
+        cars.add(car);
     }
 
     @Override
-    public void freeSpace(Car car) {
+    public void releaseFrom(Car car) {
+        space = space + car.size();
+        cars.remove(car);
     }
 }

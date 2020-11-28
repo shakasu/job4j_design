@@ -6,14 +6,14 @@ package ru.job4j.design.lsp.parking;
  */
 public interface Parkable {
     /**
-     * Car can take up space.
+     * Lets the car into the parking lot.
      * @param car - car.
      */
-    void takeSpace (Car car);
+    void letIn (Car car);
 
     /**
-     * Car can free up space.
+     * Release of the car from the parking lot.
      * @param car - car.
      */
-    void freeSpace (Car car);
+    void releaseFrom (Car car);
 }
