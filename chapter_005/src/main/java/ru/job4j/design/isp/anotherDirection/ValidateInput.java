@@ -1,6 +1,9 @@
-package ru.job4j.design.isp.validate;
+package ru.job4j.design.isp.anotherDirection;
 
-public class ValidateInput implements InputRange, InputString {
+/**
+ * Input's implementation for validating user's input.
+ */
+public class ValidateInput implements Input {
     ConsoleInput consoleInput;
 
     public ValidateInput(ConsoleInput consoleInput) {
@@ -8,17 +11,12 @@ public class ValidateInput implements InputRange, InputString {
     }
 
     @Override
-    public String askStr(String question) {
-        return consoleInput.askStr(question);
-    }
-
-    @Override
-    public int askInt(String question, int max) {
+    public int askInt(int max) {
         boolean invalid = true;
         int value = -1;
         do {
             try {
-                value = consoleInput.askInt(question, max);
+                value = consoleInput.askInt(max);
                 invalid = false;
             } catch (IllegalStateException moe) {
                 System.out.println("Please select key from menu.");

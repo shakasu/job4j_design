@@ -1,7 +1,7 @@
-package ru.job4j.design.isp.start;
+package ru.job4j.design.isp.likeTracker.start;
 
 
-import ru.job4j.design.isp.validate.*;
+import ru.job4j.design.isp.likeTracker.validate.*;
 
 
 import java.util.function.Consumer;

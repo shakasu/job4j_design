@@ -1,8 +1,8 @@
-package ru.job4j.design.isp.start;
+package ru.job4j.design.isp.likeTracker.start;
 
-import ru.job4j.design.isp.actions.*;
-import ru.job4j.design.isp.actions.UserAction;
-import ru.job4j.design.isp.validate.InputString;
+import ru.job4j.design.isp.likeTracker.actions.*;
+import ru.job4j.design.isp.likeTracker.actions.UserAction;
+import ru.job4j.design.isp.likeTracker.validate.InputString;
 
 import java.util.ArrayList;
 import java.util.List;

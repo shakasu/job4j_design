@@ -1,11 +1,7 @@
 package ru.job4j.design.isp;
 
-import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import ru.job4j.design.isp.start.StartUI;
-import ru.job4j.design.isp.validate.StubInput;
-import ru.job4j.design.isp.validate.ValidateInput;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

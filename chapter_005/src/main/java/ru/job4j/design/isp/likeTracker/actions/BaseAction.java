@@ -1,4 +1,4 @@
-package ru.job4j.design.isp.actions;
+package ru.job4j.design.isp.likeTracker.actions;
 
 public abstract class BaseAction implements UserAction {
     private final String name;
