@@ -27,4 +27,14 @@ public class Parking implements Parkable {
         space = space + car.size();
         cars.remove(car);
     }
+
+    @Override
+    public int emptySpace() {
+        return 0;
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
 }

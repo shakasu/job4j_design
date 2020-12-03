@@ -5,7 +5,11 @@ package ru.job4j.design.lsp.parking;
  */
 public class Truck implements Car {
     private final static String name = "Truck";
-    private final static int size = 2;
+    private final int size;
+
+    public Truck(int size) {
+        this.size = size;
+    }
 
     @Override
     public String name() {

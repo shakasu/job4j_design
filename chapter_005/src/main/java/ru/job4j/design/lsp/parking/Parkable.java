@@ -16,4 +16,8 @@ public interface Parkable {
      * @param car - car.
      */
     void releaseFrom (Car car);
+
+    public int size();
+
+    public int emptySpace();
 }
