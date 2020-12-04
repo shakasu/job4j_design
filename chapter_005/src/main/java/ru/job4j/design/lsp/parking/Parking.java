@@ -7,24 +7,27 @@ import java.util.List;
  * Base implementation of Parkable.
  */
 public class Parking implements Parkable {
-   int space;
+   int unitCar;
+   int unitTruck;
    List<Car> cars;
+   int space;
 
 
-    public Parking(int space) {
-        this.space = space;
+    public Parking(int unitCar, int unitTruck) {
+        this.unitCar = unitCar;
+        this.unitTruck = unitTruck;
         cars = new ArrayList<>();
     }
 
     @Override
     public void letIn(Car car) {
-        space = space - car.size();
+        unitCar = unitCar - car.size();
         cars.add(car);
     }
 
     @Override
     public void releaseFrom(Car car) {
-        space = space + car.size();
+        unitCar = unitCar + car.size();
         cars.remove(car);
     }
 
