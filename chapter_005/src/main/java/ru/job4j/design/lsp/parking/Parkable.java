@@ -9,7 +9,7 @@ public interface Parkable {
      * Lets the car into the parking lot.
      * @param car - car.
      */
-    void letIn (Car car);
+    void letIn (Car car) throws Exception;
 
     /**
      * Release of the car from the parking lot.
@@ -17,7 +17,15 @@ public interface Parkable {
      */
     void releaseFrom (Car car);
 
-    public int size();
+    /**
+     * Actual filling of Parkable.
+     * @return - number of places filled.
+     */
+    int size();
 
-    public int emptySpace();
+    /**
+     *Actual filling of Parkable.
+     * @return - number of free places.
+     */
+    int emptySpace();
 }
