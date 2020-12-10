@@ -8,25 +8,21 @@ import java.util.NoSuchElementException;
  * Base implementation of Parkable.
  */
 public class Parking implements Parkable {
-    private int currentCar;
-    private int currentTruck;
-    private final List<Car> cars;
-    private int space;
-    private final int truckCellSize;
+    private final List<Car> cars = new ArrayList<>();
+    private final List<Car> trucks = new ArrayList<>();
+    private final int spaceForCar;
+    private final int spaceForTruck;
+    private int actualCars = 0;
+    private int actualTrucks = 0;
 
     /**
      * Constructor.
      * @param spaceForCar - free space for car.
      * @param spaceForTruck - free space for truck.
-     * @param truckCellSize - cell ratio truck to car.
      */
-    public Parking(int spaceForCar, int spaceForTruck, int truckCellSize) {
-        this.currentCar = 0;
-        this.currentTruck = 0;
-        this.cars = new ArrayList<>(spaceForCar + spaceForTruck);
-        this.space = spaceForCar + spaceForTruck * truckCellSize;
-        this.truckCellSize = truckCellSize;
-
+    public Parking(int spaceForCar, int spaceForTruck) {
+        this.spaceForCar = spaceForCar;
+        this.spaceForTruck = spaceForTruck;
     }
 
     /**
@@ -35,42 +31,54 @@ public class Parking implements Parkable {
      * @return - result of checking.
      */
     public boolean isTruck(Car car) {
-        return ((double) car.size() / (double) truckCellSize) % 1 == 0;
+        return car.size() != 1;
     }
 
     @Override
     public void letIn(Car car) {
-        if (emptySpace() < car.size()) {
-            throw new ArrayIndexOutOfBoundsException("The car is too big.");
+        if (!parkingAvailable(car)) {
+            throw new ArrayIndexOutOfBoundsException("There is not enough space in the parking");
         }
         if (isTruck(car)) {
-            currentTruck++;
+            trucks.add(car);
+            actualCars++;
         } else {
-            currentCar++;
+            if (actualTrucks == spaceForTruck) {
+                actualCars = actualCars + car.size();
+            }
+            cars.add(car);
+            actualTrucks++;
         }
-        cars.add(car);
     }
 
     @Override
     public void releaseFrom(Car car) {
-        if (emptySpace() == space) {
+        if (!contains(car)) {
             throw new NoSuchElementException("No cars for release.");
         }
         if (isTruck(car)) {
-            currentTruck--;
+            trucks.remove(car);
+            actualCars--;
         } else {
-            currentCar--;
+            if (actualTrucks == spaceForTruck) {
+                actualCars = actualCars - car.size();
+            }
+            cars.remove(car);
+            actualTrucks--;
         }
-        cars.remove(car);
     }
 
-    @Override
-    public int emptySpace() {
-        return space - currentCar - currentTruck * truckCellSize;
+    private boolean parkingAvailable(Car car) {
+        boolean result;
+        result = isTruck(car) || actualCars != spaceForCar;
+        result = (!isTruck(car)
+                || actualTrucks != spaceForTruck
+                || car.size() <= (spaceForCar - actualCars)
+        ) && result;
+        return result;
     }
 
-    @Override
-    public int size() {
-        return space - emptySpace();
+    public boolean contains(Car car) {
+        return cars.contains(car) || trucks.contains(car);
     }
 }

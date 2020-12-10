@@ -18,14 +18,9 @@ public interface Parkable {
     void releaseFrom (Car car);
 
     /**
-     * Actual filling of Parkable.
-     * @return - number of places filled.
+     * Checking that parking contains the car.
+     * @param car - car.
+     * @return - result of checking.
      */
-    int size();
-
-    /**
-     *Actual filling of Parkable.
-     * @return - number of free places.
-     */
-    int emptySpace();
+    boolean contains(Car car);
 }
